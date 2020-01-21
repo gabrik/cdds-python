@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='python-cdds',
-    version='0.1.0',
+    version='0.1.1',
     packages=['cdds', ],
     author='kydos',
     url='https://github.com/atolab/python-cdds',
