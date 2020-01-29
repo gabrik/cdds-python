@@ -12,29 +12,62 @@ def get_lib_ext():
     else:
         return '.dll'
 
+# def get_user_lib_path():
+#     system = platform.system()
+#     if system == 'Linux':
+#         return '/usr/local/lib'
+#     elif system == 'Darwin':
+#         return '/usr/local/lib'
+#     elif system in ['windows', 'Windows', 'win32']:
+#         return os.environ['CDDS_HOME']
+#     else:
+#         return '/usr/local/lib'
+
 def get_user_lib_path():
     system = platform.system()
     if system == 'Linux':
-        return '/usr/local/lib'
+        return '/home/firas/cyclone/cyclonedds/bld/lib/install/lib'
     elif system == 'Darwin':
         return '/usr/local/lib'
     elif system in ['windows', 'Windows', 'win32']:
         return os.environ['CDDS_HOME']
     else:
+        return '/home/firas/cyclone/cyclonedds/bld/lib/install/lib'
+
+def get_user_bit_lib_path():
+    system = platform.system()
+    if system == 'Linux':
+        return '/home/firas/cyclone/cdds_python/bit/build'
+    elif system == 'Darwin':
         return '/usr/local/lib'
+    elif system in ['windows', 'Windows', 'win32']:
+        return os.environ['CDDS_HOME']
+    else:
+        return '/home/firas/cyclone/cdds_python/bit/build'
 
-
+# system = platform.system()
+# if system in ['windows', 'Windows', 'win32']:
+#     cham_lib = 'ddsc' + get_lib_ext()
+#     bit_lib = 'ddstubs' + get_lib_ext()
+#     cham_lib_path = get_user_bit_lib_path() + os.sep + cham_lib
+#     bit_lib_path = get_user_bit_lib_path() + os.sep + bit_lib
+# else:
+#     cham_lib = 'libddsbit' + get_lib_ext()
+#     bit_lib = 'libddstubs' + get_lib_ext()
+#     cham_lib_path = get_user_bit_lib_path() + os.sep + cham_lib
+#     bit_lib_path = get_user_bit_lib_path() + os.sep + bit_lib
+    
 system = platform.system()
 if system in ['windows', 'Windows', 'win32']:
     cham_lib = 'ddsc' + get_lib_ext()
     bit_lib = 'ddstubs' + get_lib_ext()
     cham_lib_path = get_user_lib_path() + os.sep + cham_lib
-    bit_lib_path = get_user_lib_path() + os.sep + bit_lib
+    bit_lib_path = get_user_bit_lib_path() + os.sep + bit_lib
 else:
     cham_lib = 'libddsc' + get_lib_ext()
     bit_lib = 'libddstubs' + get_lib_ext()
     cham_lib_path = get_user_lib_path() + os.sep + cham_lib
-    bit_lib_path = get_user_lib_path() + os.sep + bit_lib
+    bit_lib_path = get_user_bit_lib_path() + os.sep + bit_lib
 
 # Limits and Constants
 MAX_SAMPLES = 256
@@ -168,7 +201,7 @@ class SampleInfo(Structure):
         return self.instance_state == DDS_NOT_ALIVE_NO_WRITERS_INSTANCE_STATE
 
 
-dds_entity_t = c_int32
+dds_entity_t = c_int64
 dds_time_t = c_int64
 dds_duration_t = c_int64
 dds_instance_handle_t = c_int64
