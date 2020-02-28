@@ -2,12 +2,12 @@ import unittest
 
 __author__ = 'ADlink Technology'
 
-from cdds import *
+from pydds import *
 import time
 
-class SequqnceTypeTopic(Topic):
+class SequqnceTypeTopic(FlexyTopic):
     def __init__(self, longID, longSequence):
-        super(Topic, self).__init__()
+        super(FlexyTopic, self).__init__()
         self.longID = longID
         self.longSequence = longSequence
     
@@ -30,10 +30,10 @@ class BasicTestCase(unittest.TestCase):
         writer = FlexyWriter(publisher, topic, [Reliable(), TransientLocal(), KeepLastHistory(10)])
         
         cnt = 0
-        
-        
         message = SequqnceTypeTopic( 1, [21, 32, 43])
+        
         cnt += 1
+        
         writer.write(message)
         print('Writer wrote: {0}'.format(message))
         time.sleep(1)
@@ -49,12 +49,14 @@ class BasicTestCase(unittest.TestCase):
         messageReceived = False
         
         while not messageReceived:
-            time.sleep(5)
+            print(messageReceived)
+            time.sleep(1)
             samples = dataReader.take(all_samples())
             
             for sample in samples:
                 if sample[1].valid_data:
                     print ('message >> {0})'.format(sample[0]))
+                    self.assertEqual(sample[0].longID, message.longID, "received sample is not correct")
                     messageReceived=True
                     
 

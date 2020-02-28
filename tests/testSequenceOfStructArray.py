@@ -4,12 +4,12 @@ from struct import *
 
 __author__ = 'ADlink Technology'
 
-from cdds import *
+from pydds import *
 import time
 
-class Inner_Struct(Topic):
+class Inner_Struct(FlexyTopic):
     def __init__(self, short, double):
-        super(Topic, self).__init__()
+        super(FlexyTopic, self).__init__()
         self.short1= short
         self.double1=double
         
@@ -25,13 +25,11 @@ class Inner_Struct(Topic):
             return NotImplemented
         
         return self.short1 == other.short1 and self.double1 == other.double1
-    
-    
     __repr__ = __str__
     
-class Inner_Struct_Array(Topic):
+class Inner_Struct_Array(FlexyTopic):
     def __init__(self, seq):
-        super(Topic, self).__init__()
+        super(FlexyTopic, self).__init__()
         self.SeqArray = seq
     
     def __str__(self):
@@ -56,9 +54,9 @@ class Inner_Struct_Array(Topic):
     __repr__ = __str__
         
 
-class SequenceOfStructArray_struct(Topic):
+class SequenceOfStructArray_struct(FlexyTopic):
     def __init__(self, longID, arraySequence):
-        super(Topic, self).__init__()
+        super(FlexyTopic, self).__init__()
         self.longID = longID
         self.arraySequence = Inner_Struct_Array(arraySequence)
     
@@ -103,7 +101,7 @@ class BasicTestCase(unittest.TestCase):
         messageReceived = False
         
         while not messageReceived:
-            time.sleep(5)
+            time.sleep(1)
             samples = dataReader.take(all_samples())
             
             for sample in samples:
@@ -113,8 +111,6 @@ class BasicTestCase(unittest.TestCase):
                     self.assertEqual(message.longID, sample[0].longID)
                     self.assertEqual(message.arraySequence[0],sample[0].arraySequence[0])
                     messageReceived=True
-#                     if messageReceived:
-#                         break
 
 if __name__ == "__main__":
     unittest.main() # run all tests
