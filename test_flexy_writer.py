@@ -1,13 +1,13 @@
 _author__ = 'Angelo Corsaro'
 
-from cdds import *
+from pydds import *
 import  time
 import sys
 from random import randint
 
-class VehiclePosition(Topic):
+class VehiclePosition(FlexyTopic):
     def __init__(self, cid):
-        super(Topic, self).__init__()
+        super(FlexyTopic, self).__init__()
         self.x = 0
         self.y = 0
         self.key_ = cid

@@ -1,12 +1,12 @@
 __author__ = 'Angelo Corsaro'
 
-from cdds import *
+from pydds import *
 import time
 
 # TODO: Factor out the definition of Vehicle position...
-class VehiclePosition(Topic):
+class VehiclePosition(FlexyTopic):
     def __init__(self, cid):
-        super(Topic, self).__init__()
+        super(FlexyTopic, self).__init__()
         self.x = 0
         self.y = 0
         self.key_ = cid
@@ -41,16 +41,17 @@ def testDynaTypes():
 
     t = FlexyTopic(dp,  'KeyValue')
 
-    dr = FlexyReader(dp, t, data_available, [Reliable(), KeepLastHistory(10)])
-    dr.on_liveliness_changed(liveliness_changed)
+    dr = FlexyReader(dp, t, None, [Reliable(), KeepLastHistory(10)])
+    # dr.on_liveliness_changed(liveliness_changed)
 
-    # while True:
-    #     samples = dr.read(all_samples())
-    #     for s in samples:
-    #         if s[1].valid_data:
-    #             print('reader>> {0})'.format(s[0]))
     while True:
-        time.sleep(60)
+        samples = dr.read(all_samples())
+        time.sleep(1)
+        for s in samples:
+            if s[1].valid_data:
+                print("type(s[0]) = ", type(s[0]))
+                print('reader>> {0})'.format(s[0]))
+                
 
 if __name__ == '__main__':
     testDynaTypes()
