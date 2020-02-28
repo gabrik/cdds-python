@@ -70,7 +70,7 @@ else:
     bit_lib_path = get_user_bit_lib_path() + os.sep + bit_lib
 
 # Limits and Constants
-MAX_SAMPLES = 256
+MAX_SAMPLES = 10
 
 
 #

@@ -1,5 +1,10 @@
 from .runtime import Runtime
 from .dds_binding import DDSKeyValue
+from ctypes import *
+
+from pydds import *
+
+MAX_NAME_SIZE = 100
 
 class TopicType(object):
     def gen_key(self): None
@@ -15,7 +20,8 @@ class FlexyTopic:
 
         self.qos = self.rt.to_rw_qos(qos)
         self.type_support = self.rt.get_key_value_type_support()
-        self.topic = self.rt.ddslib.dds_create_topic(dp.handle, self.type_support , name.encode(), self.qos, None)
+        
+        self.topic = self.rt.ddslib.dds_create_topic(dp._handle, self.type_support , name.encode(), self.qos, None)
         self.handle = self.topic
         assert (self.topic > 0)
         self.data_type = DDSKeyValue
@@ -23,16 +29,8 @@ class FlexyTopic:
 
     def gen_key(self, s):
         return self.keygen(s)
-
-
-class Topic:
-    def __init__(self, dp, topic_name, type_support, data_type, qos):
-        self.rt = Runtime.get_runtime()
-        self.topic_name = topic_name
-        self.type_support = type_support
-        self.data_type = data_type
-        self.qos = self.rt.to_rw_qos(qos)
-
-        self.topic = self.rt.ddslib.dds_create_topic(dp.handle, type_support, topic_name.encode(), self.qos, None)
-        self.handle = self.topic
-        assert (self.handle > 0)
+    
+    def get_name(self, topic_name):
+        rc = self.rt.ddslib.dds_get_name(self.handle, topic_name)
+        
+        return rc

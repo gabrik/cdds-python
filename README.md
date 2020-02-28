@@ -1,7 +1,7 @@
 # Cyclone DDS Python API
 
 ## Overview
-**cdds-python** is a simple Python API for Cyclon DDS
+**pydds-python** is a simple Python API for Cyclon DDS
 
 This API supports:
 
@@ -24,7 +24,7 @@ as
 Once the dependencies are intalled simply do (assuming your are running on Linux):
 
 ```
-$ cd python-cdds
+$ cd python-pydds
 $ ./configure
 $ python3 setup.py install 
 ```

@@ -2,6 +2,10 @@ from .dds_binding import *
 import jsonpickle
 from .runtime import Runtime
 
+from pydds import *
+
+from collections import namedtuple
+
 @LIVELINESS_CHANGED_PROTO
 def trampoline_on_liveliness_changed(r, s, a):
     # print("[python-cdds]:>>  Dispatching Liveliness change")
@@ -46,9 +50,6 @@ def new_instance_samples():
 
 def not_alive_instance_samples():
     return c_uint(DDS_ANY_SAMPLE_STATE | DDS_ANY_VIEW_STATE | DDS_NOT_ALIVE_NO_WRITERS_INSTANCE_STATE)
-
-
-
 
 class FlexyReader:
     def __init__(self, sub, flexy_topic, flexy_data_listener=None, ps=None):
@@ -183,5 +184,4 @@ class FlexyReader:
 
     def wait_history(self, timeout):
         return self.rt.ddslib.dds_reader_wait_for_historical_data(self.handle, timeout)
-
-
+    

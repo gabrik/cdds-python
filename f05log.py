@@ -1,5 +1,5 @@
 
-from cdds import *
+from pydds import *
 from fog05.interfaces.Types import *
 import sys
 
