@@ -20,6 +20,7 @@ class Runtime:
 
         self.ddslib = CDLL(cham_lib_path)
         self.stublib = CDLL(bit_lib_path)
+        self.helloworld_lib = CDLL(helloworld_lib_path)
 
         self.kv_topic = None
         self.v_topic = None
@@ -227,10 +228,10 @@ class Runtime:
         return self.stublib.dds_bit_SValue_desc
     
     def get_hello_world_key_value_type_support(self):
-        return self.stublib.HelloWorldDataMsg_keys
+        return self.helloworld_lib.HelloWorldDataMsg_keys
 
     def get_hello_world_simple_value_type_support(self):
-        return self.stublib.HelloWorldData_Msg_desc
+        return self.helloworld_lib.HelloWorldData_Msg_desc
     
     def get_waitset_key_value_type_support(self):
         return self.stublib.WaitSetData_Msg_keys

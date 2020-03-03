@@ -66,8 +66,10 @@ if system in ['windows', 'Windows', 'win32']:
 else:
     cham_lib = 'libddsc' + get_lib_ext()
     bit_lib = 'libddstubs' + get_lib_ext()
+    helloworld_lib = 'libddshelloworld' + get_lib_ext()
     cham_lib_path = get_user_lib_path() + os.sep + cham_lib
     bit_lib_path = get_user_bit_lib_path() + os.sep + bit_lib
+    helloworld_lib_path = get_user_bit_lib_path() + os.sep + helloworld_lib
 
 # Limits and Constants
 MAX_SAMPLES = 10

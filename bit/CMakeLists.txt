@@ -32,8 +32,10 @@ message ("${idcl_generate} -d ${CMAKE_CURRENT_SOURCE_DIR}/ ${CMAKE_CURRENT_SOURC
 # COMMENT "Generating files in  ${CMAKE_CURRENT_SOURCE_DIR}  "
 # )
 idlc_generate_func(${CMAKE_CURRENT_SOURCE_DIR}/bit.idl)
+idlc_generate_func(${CMAKE_CURRENT_SOURCE_DIR}/../tests/helloworld.idl)
 
 add_library(ddstubs SHARED ${CMAKE_CURRENT_SOURCE_DIR}/dds_stubs.c)
 add_library(ddsbit SHARED ${CMAKE_CURRENT_SOURCE_DIR}/bit.c ${CMAKE_CURRENT_SOURCE_DIR}/bit.h )
+add_library(ddshelloworld SHARED ${CMAKE_CURRENT_SOURCE_DIR}/helloworld.c ${CMAKE_CURRENT_SOURCE_DIR}/helloworld.h )
 
-target_link_libraries(ddstubs ddsbit CycloneDDS::ddsc)
+target_link_libraries(ddstubs ddsbit ddshelloworld CycloneDDS::ddsc)
