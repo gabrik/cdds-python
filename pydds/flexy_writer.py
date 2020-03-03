@@ -7,7 +7,7 @@ from pydds import *
 class FlexyWriter:
     def __init__(self, pub, flexy_topic, ps = None):
         self.rt = Runtime.get_runtime()
-        self.dp = pub.dp
+        self. prticipant= pub.participant
         self.qos = self.rt.to_rw_qos(ps)
         self.handle = self.rt.ddslib.dds_create_writer(pub.handle, flexy_topic.topic, self.qos, None)
 
