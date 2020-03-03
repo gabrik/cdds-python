@@ -54,7 +54,7 @@ def not_alive_instance_samples():
 class FlexyReader:
     def __init__(self, sub, flexy_topic, flexy_data_listener=None, ps=None):
         self.rt = Runtime.get_runtime()
-        self.dp = sub.dp
+        self.participant = sub.participant
         self.sub = sub
         self.flexy_topic = flexy_topic
         if flexy_data_listener is None:
