@@ -7,7 +7,7 @@ from collections import OrderedDict, namedtuple
 
 import os, sys
 
-from pydds import *
+from cdds import *
 
 from idl_parser import parser
 

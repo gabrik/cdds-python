@@ -1,8 +1,8 @@
 from .runtime import Runtime
 from .policy import  Partition
-from pydds import *
+from cdds import *
 
-from pydds.reader import *
+from cdds.reader import *
 
 class Subscriber(Entity):
     def __init__(self, dp, ps = None, listener = None):
@@ -40,7 +40,7 @@ class Subscriber(Entity):
     def participant(self, entity):
         super(Subscriber, self.__class__).participant.fset (self, entity)
         
-    def dds_create_reader(self, topic, policy = None, dr_listener = None):
+    def create_reader(self, topic, policy = None, dr_listener = None):
         data_reader = Reader(self, topic, policy, dr_listener)
         self._datareader_list.append(data_reader)
         return data_reader

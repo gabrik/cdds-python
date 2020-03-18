@@ -4,7 +4,7 @@ from struct import *
 
 __author__ = 'ADlink Technology'
 
-from pydds import *
+from cdds import *
 import time
 
 class Inner_Struct(FlexyTopic):

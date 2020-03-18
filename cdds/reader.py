@@ -2,7 +2,7 @@ from .dds_binding import *
 import jsonpickle
 from .runtime import Runtime
 
-from pydds import *
+from cdds import *
 
 from collections import namedtuple
 

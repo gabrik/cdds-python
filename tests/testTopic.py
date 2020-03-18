@@ -1,11 +1,11 @@
 import unittest
 
 
-# from pydds.py_dds_utils import *
+# from cdds.py_dds_utils import *
 
 __author__ = 'ADlink Technology'
 
-from pydds import *
+from cdds import *
 
 import time
 
@@ -53,12 +53,20 @@ import time
 
 class TopicTest (unittest.TestCase):
     def setUp(self):
+        self.helloworld_lib = CDLL(helloworld_lib_path)
+        
         self.rt = Runtime.get_runtime()
         self.dp = Participant(0)
         self.name = "topic_name"
-        self.type_support = self.rt.get_hello_world_simple_value_type_support()
+        self.type_support = self.get_hello_world_simple_value_type_support()
         self.topic = Topic (self.dp, self.name, self.type_support , None, None)
-        
+    
+    def get_hello_world_key_value_type_support(self):
+        return self.helloworld_lib.HelloWorldDataMsg_keys
+
+    def get_hello_world_simple_value_type_support(self):
+        return self.helloworld_lib.HelloWorldData_Msg_desc
+    
     def tearDown(self):
         self.dp.rt.close()
         pass

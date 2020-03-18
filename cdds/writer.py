@@ -2,7 +2,7 @@ from .runtime import Runtime
 from .dds_binding import *
 import jsonpickle
 
-from pydds import *
+from cdds import *
 
 class Writer (Entity):
     def __init__(self, pub, topic, ps = None, listener = None):

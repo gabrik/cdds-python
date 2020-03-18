@@ -2,7 +2,7 @@ import unittest
 
 __author__ = 'ADlink Technology'
 
-from pydds import *
+from cdds import *
 import time
 
 class SequqnceTypeTopic(FlexyTopic):

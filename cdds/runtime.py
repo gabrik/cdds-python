@@ -1,6 +1,6 @@
 from ctypes import *
 from .dds_binding import *
-from pydds.dds_binding import dds_return_t
+from cdds.dds_binding import dds_return_t
 the_runtime = None
 
 class Runtime:
@@ -20,7 +20,7 @@ class Runtime:
 
         self.ddslib = CDLL(cham_lib_path)
         self.stublib = CDLL(bit_lib_path)
-        self.helloworld_lib = CDLL(helloworld_lib_path)
+        
 
         self.kv_topic = None
         self.v_topic = None
@@ -226,18 +226,6 @@ class Runtime:
 
     def get_simple_value_type_support(self):
         return self.stublib.dds_bit_SValue_desc
-    
-    def get_hello_world_key_value_type_support(self):
-        return self.helloworld_lib.HelloWorldDataMsg_keys
-
-    def get_hello_world_simple_value_type_support(self):
-        return self.helloworld_lib.HelloWorldData_Msg_desc
-    
-    def get_waitset_key_value_type_support(self):
-        return self.stublib.WaitSetData_Msg_keys
-
-    def get_waitset_simple_value_type_support(self):
-        return self.stublib.WaitSetData_Msg_desc
     
 
     def to_rw_qos(self, ps):

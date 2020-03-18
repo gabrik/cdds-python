@@ -1,6 +1,6 @@
 from .runtime import Runtime
 from ctypes import  *
-from pydds import *
+from cdds import *
 
 class Entity(object):
     def __init__(self):
@@ -13,22 +13,22 @@ class Entity(object):
         self._participant = None
         
         
-    def dds_enable(self):
+    def enable(self):
         rc = self.rt.ddslib.dds_enable ( self.handle)
         return rc
     
-    def dds_delete(self):
+    def delete(self):
         rc = self.rt.ddslib.dds_delete()
         return rc
     
 
-    def dds_get_participant(self):
+    def get_participant(self):
         participant = None
         if(self._handle is not None):
             participant = self.rt.ddslib.dds_get_participant(self.handle)
         return participant
     
-    def dds_get_children(self, size = 0):
+    def get_children(self, size = 0):
         rc = 0
         childern = {}
         rc = self.rt.ddslib.dds_get_children(self.handle, childeren, size)
@@ -38,12 +38,12 @@ class Entity(object):
         
         return rc
     
-    def dds_set_qos(self, qos = []):
+    def set_qos(self, qos = []):
         rc = 0
         rc = self.rt.ddslib.dds_set_qos(self.handle, self.qos)
         return rc
     
-    def dds_get_qos(self):
+    def get_qos(self):
         rc = 0
         qos_policies = []
         rc = self.rt.ddslib.dds_get_qos(self.handle, qos_policies)

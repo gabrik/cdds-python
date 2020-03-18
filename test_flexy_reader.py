@@ -1,6 +1,6 @@
 __author__ = 'Angelo Corsaro'
 
-from pydds import *
+from cdds import *
 import time
 
 # TODO: Factor out the definition of Vehicle position...

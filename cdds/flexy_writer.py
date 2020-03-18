@@ -2,7 +2,6 @@ from .runtime import Runtime
 from .dds_binding import *
 import jsonpickle
 
-from pydds import *
 
 class FlexyWriter:
     def __init__(self, pub, flexy_topic, ps = None):

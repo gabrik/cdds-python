@@ -2,8 +2,8 @@ import unittest
 
 __author__ = 'ADlink Technology'
 
-from pydds import *
-import pydds.py_dds_utils as utils
+from cdds import *
+import cdds.py_dds_utils as utils
 
 class PublisherTest (unittest.TestCase):
     def setUp(self):
@@ -22,16 +22,16 @@ class PublisherTest (unittest.TestCase):
         type_support = self.rt.get_key_value_type_support() 
         topic = Topic (self.participant, topic_name, type_support)
         datawriter_ps = [Reliable(), KeepLastHistory(10)] 
-        datawriter = self.publisher.dds_create_writer( topic, datawriter_ps)
+        datawriter = self.publisher.create_writer( topic, datawriter_ps)
         
         self.assertIsNotNone( datawriter, "Create_writer failed")
         self.assertIsInstance( datawriter, Writer, "Create_datawriter created an entity of a wrong type")
         
     def test_suspend_resume(self):
-        rc = self.publisher.dds_suspend()
+        rc = self.publisher.suspend()
         self.assertEqual(rc, -2, "Suspend did not return the correct return code")
         
-        rc= self.publisher.dds_resume()
+        rc= self.publisher.resume()
         self.assertEqual(rc, -2, "Resume did not return the correct return code")
 
 if __name__ == "__main__":

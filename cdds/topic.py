@@ -2,8 +2,8 @@ from .runtime import Runtime
 from .dds_binding import DDSKeyValue
 from ctypes import *
 
-from pydds import *
-from pydds.entity import *
+from cdds import *
+from cdds.entity import *
 
 MAX_NAME_SIZE = 100
 
@@ -37,7 +37,7 @@ class Topic(Entity):
     def gen_key(self, s):
         return self.keygen(s)
         
-    def dds_get_name(self):
+    def get_name(self):
         res = " "* MAX_NAME_SIZE
         result = res.encode(encoding='utf_8', errors='strict')
         rc = self.rt.ddslib.dds_get_name(self.handle, result, MAX_NAME_SIZE)

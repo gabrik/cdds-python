@@ -1,9 +1,9 @@
 from .runtime import Runtime
-from pydds import pub, topic, entity
-from pydds.topic import *
-from pydds.entity import *
-from pydds.sub import *
-from pydds.entity import *
+from cdds import pub, topic, entity
+from cdds.topic import *
+from cdds.entity import *
+from cdds.sub import *
+from cdds.entity import *
 
 
 #DomainParticipant Wrapper 
@@ -25,18 +25,18 @@ class Participant(Entity):
         self._reader_list = []
         self._topic_list = []
         
-    def dds_create_publisher(self, publisher_qos = None, publisher_listener = None):
+    def create_publisher(self, publisher_qos = None, publisher_listener = None):
         publisher = pub.Publisher(self, publisher_qos, publisher_listener)
         self._publisher_list.append(publisher)
         
         return  publisher
     
-    def dds_create_subscriber(self, subsriber_qos= None, subscriber_listener= None):
+    def create_subscriber(self, subsriber_qos= None, subscriber_listener= None):
         subscriber = Subscriber(self, subsriber_qos, subscriber_listener)
         self._subscriber_list.append(subscriber)
         return subscriber
     
-    def dds_create_topic(self, topic_name, type_support = None, qos = None, topic_listener = None ):
+    def create_topic(self, topic_name, type_support = None, qos = None, topic_listener = None ):
         if(type_support is None):
             type_support = self.rt.get_key_value_type_support()
         topic = Topic(self, topic_name, type_support,  qos, topic_listener)

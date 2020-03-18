@@ -1,11 +1,12 @@
 __author__ = 'ADlink Technology'
 
-import cdds
+from cdds import *
 import time
 
-class HelloWorldMessage(Topic):
+
+class HelloWorldMessage(FlexyTopic):
     def __init__(self, userID, messageText):
-        super(Topic, self).__init__()
+        super(FlexyTopic, self).__init__()
         self.userID = userID
         self.message = messageText
     
@@ -21,7 +22,7 @@ def subscriber():
     
     topic = FlexyTopic(dp, 'HelloWorldData_Msg')
     
-    subscriber = dp.dds_create_subscriber()
+    subscriber = dp.create_subscriber()
     
     dataReader = FlexyReader(subscriber, topic, None, [Reliable(), TransientLocal(), KeepLastHistory(10)])
     

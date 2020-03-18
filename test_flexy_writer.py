@@ -1,6 +1,6 @@
 _author__ = 'Angelo Corsaro'
 
-from pydds import *
+from cdds import *
 import  time
 import sys
 from random import randint

@@ -1,6 +1,6 @@
 __author__ = 'Angelo Corsaro'
 
-from pydds import *
+from cdds import *
 import  time
 
 # TODO: Factor out the definition of Vehicle position...
@@ -29,7 +29,7 @@ def testDynaTypes():
     dp = Participant(0)
 
     t = FlexyTopic(dp,  'KeyValue')
-    # s = Subscriber(dp, [Partition(['pydds-python.demo'])])
+    # s = Subscriber(dp, [Partition(['cdds-python.demo'])])
 
     dr = FlexyReader(dp, t)
 

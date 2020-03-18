@@ -2,7 +2,7 @@ import unittest
 
 __author__ = 'ADlink Technology'
 
-from pydds import *
+from cdds import *
 
 import os, sys
 
@@ -11,21 +11,25 @@ from idl_parser import parser
 parser_ = parser.IDLParser()
 
 from idl_parser import parser
-import pydds.py_dds_utils as utils
+import cdds.py_dds_utils as utils
 
 import time
 
+
+
 class DataWriterTest (unittest.TestCase):
     def setUp(self):
+        self.helloworld_lib = CDLL(helloworld_lib_path)
+        
         self.rt = Runtime.get_runtime()
         self.dp = Participant(0)
         self.pub = Publisher(self.dp)
         self.sub = Subscriber(self.dp)
         
         topic_name = "HelloWorldData_Msg"
-        type_support = self.rt.get_hello_world_simple_value_type_support()
+        type_support = self.get_hello_world_simple_value_type_support()
         
-        self.topic = self.dp.dds_create_topic(topic_name, type_support)
+        self.topic = self.dp.create_topic(topic_name, type_support)
         
         self.writer = Writer(self.pub, self.topic, [Reliable(), KeepLastHistory(10)])
         self.reader = Reader(self.sub, self.topic,  [Reliable(), KeepLastHistory(10)])
@@ -33,6 +37,12 @@ class DataWriterTest (unittest.TestCase):
     def test_init_writer(self):
         self.assertIsNotNone (self.writer, "Initializing the data_writer failed")
         self.assertIsInstance(self.writer, Writer)
+    
+    def get_hello_world_key_value_type_support(self):
+        return self.helloworld_lib.HelloWorldDataMsg_keys
+
+    def get_hello_world_simple_value_type_support(self):
+        return self.helloworld_lib.HelloWorldData_Msg_desc
         
     def test_write(self):
         idl_path = '/home/firas/cyclone/cdds-python/lexer/example.idl'

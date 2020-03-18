@@ -1,9 +1,9 @@
 from .runtime import Runtime
 from .policy import Partition
 
-from pydds import *
+from cdds import *
 
-from pydds.writer import *
+from cdds.writer import *
 
 class Publisher(Entity):
     def __init__(self, dp, ps = None, listener = None):
@@ -48,17 +48,17 @@ class Publisher(Entity):
     def participant(self, entity):
         super(Publisher, self.__class__).participant.fset (self, entity)
 
-    def dds_create_writer(self, topic, policy = None, dw_listener = None):
+    def create_writer(self, topic, policy = None, dw_listener = None):
         data_writer = Writer(self, topic, policy, dw_listener)
         self._datawriter_list.append(data_writer)
         return data_writer
     
-    def dds_suspend (self):
+    def suspend (self):
         rc = self.rt.ddslib.dds_suspend(self.handle)
         
         return rc
     
-    def dds_resume(self):
+    def resume(self):
         rc = self.rt.ddslib.dds_resume(self.handle)
         return rc
     

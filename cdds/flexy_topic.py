@@ -2,7 +2,7 @@ from .runtime import Runtime
 from .dds_binding import DDSKeyValue
 from ctypes import *
 
-from pydds import *
+from cdds import *
 
 MAX_NAME_SIZE = 100
 

@@ -1,5 +1,5 @@
 from idl_parser import parser
-import pydds.py_dds_utils as utils
+import cdds.py_dds_utils as utils
 
 
 

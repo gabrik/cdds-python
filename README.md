@@ -1,7 +1,7 @@
 # Cyclone DDS Python API
 
 ## Overview
-**pydds-python** is a simple Python API for Cyclon DDS
+**cdds-python** is a simple Python API for Cyclon DDS
 
 This API supports:
 
@@ -15,7 +15,7 @@ This API supports:
 Regardless of the kinds of type definition interoperability and instance management are maintained (see code examples).
 
 ## Installation
-**pydds** depends on:
+**cdds** depends on:
 
 - [**jsonpickle**](https://github.com/jsonpickle/jsonpickle), please refer to the project page for installation informations.
 
@@ -24,7 +24,7 @@ as
 Once the dependencies are intalled simply do (assuming your are running on Linux):
 
 ```
-$ cd python-pydds
+$ cd python-cdds
 $ ./configure
 $ python3 setup.py install 
 ```

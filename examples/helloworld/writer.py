@@ -1,13 +1,13 @@
 __author__ = 'ADlink Technology'
 
-from pydds import *
+from cdds import *
 import  time
 import sys
 from random import randint
 
-class HelloWorldMessage(Topic):
+class HelloWorldMessage(FlexyTopic):
     def __init__(self, userID, messageText):
-        super(Topic, self).__init__()
+        super(FlexyTopic, self).__init__()
         self.userID = userID
         self.message = messageText
     
@@ -22,7 +22,7 @@ def publsiher():
     dp = Participant(0)
     
     topic = FlexyTopic(dp, 'HelloWorldData_Msg')
-    publisher = dp.dds_create_publisher() 
+    publisher = dp.create_publisher() 
     
     writer = FlexyWriter(publisher, topic, [Reliable(), TransientLocal(), KeepLastHistory(10)])
     

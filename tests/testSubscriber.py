@@ -2,8 +2,8 @@ import unittest
 
 __author__ = 'ADlink Technology'
 
-from pydds import *
-import pydds.py_dds_utils as utils
+from cdds import *
+import cdds.py_dds_utils as utils
 
 class SubscriberTest (unittest.TestCase):
     def setUp(self):
@@ -22,7 +22,7 @@ class SubscriberTest (unittest.TestCase):
         type_support = self.rt.get_key_value_type_support() 
         topic = Topic (self.participant, topic_name, type_support)
         datareader_ps = [Reliable(), KeepLastHistory(10)] 
-        datareader = self.subscriber.dds_create_reader( topic, datareader_ps)
+        datareader = self.subscriber.create_reader( topic, datareader_ps)
         
         self.assertIsNotNone( datareader, "Create_reader failed")
         self.assertIsInstance( datareader, Reader, "Create_dataReader created an entity of a wrong type")

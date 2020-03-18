@@ -2,7 +2,7 @@ import unittest
 
 __author__ = 'ADlink Technology'
 
-from pydds import *
+from cdds import *
 
 import time
 
@@ -23,27 +23,27 @@ class EntityTest (unittest.TestCase):
         
         topic_name = 'topic_name'
          
-        topic = dp.dds_create_topic(topic_name)
+        topic = dp.create_topic(topic_name)
         parent_entity = topic.parent
         self.assertIsNotNone(parent_entity, " Get parent on a topic entity returned null")
         self.assertEqual(parent_entity, dp)
         
-        pub = dp.dds_create_publisher()
+        pub = dp.create_publisher()
         parent_entity = pub.participant
         self.assertIsNotNone(parent_entity, " Get parent on a publisher entity returned null")
         self.assertEqual(parent_entity, dp, "Get parent on a publisher entity a wrong entity")
         
-        sub = dp.dds_create_subscriber()
+        sub = dp.create_subscriber()
         parent_entity = sub.parent
         self.assertIsNotNone(parent_entity, " Get parent on a subscriber entity returned null")
         self.assertEqual(dp, parent_entity, "Get parent on a subscriber entity returned a wrong entity")
         
-        dw = pub.dds_create_writer(topic)
+        dw = pub.create_writer(topic)
         parent_entity = dw.parent
         self.assertIsNotNone(parent_entity, " Get parent on a datawriter entity returned null")
         self.assertEqual(parent_entity, pub, "Get parent on a datawriter entity a wrong entity")
         
-        dr = sub.dds_create_reader(topic)
+        dr = sub.create_reader(topic)
         parent_entity = dr.parent
         self.assertIsNotNone(parent_entity, " Get parent on a datareader entity returned null")
         self.assertEqual(parent_entity, sub, "Get parent on a datareader entity a wrong entity")
@@ -55,29 +55,29 @@ class EntityTest (unittest.TestCase):
         
         topic_name = 'topic_name'
          
-        topic = dp.dds_create_topic(topic_name)
+        topic = dp.create_topic(topic_name)
 
         entity = topic.participant
          
         self.assertIsNotNone(entity, " Get participant on a topic entity returned null")
         self.assertEqual(entity, dp, "Get participant on a topic entity returned a wrong result")
         
-        pub = dp.dds_create_publisher()
+        pub = dp.create_publisher()
         entity = pub.participant
         self.assertIsNotNone(entity, " Get participant on a publisher entity returned null")
         self.assertEqual(entity, dp, "Get participant on a publisher entity a wrong entity")
         
-        sub = dp.dds_create_subscriber()
+        sub = dp.create_subscriber()
         entity = sub.participant
         self.assertIsNotNone(entity, " Get participant on a subscriber entity returned null")
         self.assertEqual(dp, entity, "Get participant on a subscriber entity returned a wrong entity")
         
-        dw = pub.dds_create_writer(topic)
+        dw = pub.create_writer(topic)
         entity = dw.participant
         self.assertIsNotNone(entity, " Get participant on a datawriter entity returned null")
         self.assertEqual(entity, dp, "Get participant on a datawriter entity a wrong entity")
         
-        dr = sub.dds_create_reader(topic)
+        dr = sub.create_reader(topic)
         entity = dr.participant
         self.assertIsNotNone(entity, " Get participant on a datareader entity returned null")
         self.assertEqual(entity, dp, "Get participant on a datareader entity a wrong entity")
