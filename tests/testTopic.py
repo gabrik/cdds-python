@@ -1,12 +1,7 @@
 import unittest
-from psutil.tests.runner import ctypes
-from future.backports.http.client import FOUND
+
 
 # from pydds.py_dds_utils import *
-from pylint.test import test_self
-
-
-from subprocess import Popen, PIPE
 
 __author__ = 'ADlink Technology'
 

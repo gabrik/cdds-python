@@ -26,24 +26,24 @@ def get_lib_ext():
 def get_user_lib_path():
     system = platform.system()
     if system == 'Linux':
-        return '/home/firas/cyclone/cyclonedds/bld/lib/install/lib'
+        return '/home/firas/cyclone/cyclonedds/bld/lib/'
     elif system == 'Darwin':
         return '/usr/local/lib'
     elif system in ['windows', 'Windows', 'win32']:
         return os.environ['CDDS_HOME']
     else:
-        return '/home/firas/cyclone/cyclonedds/bld/lib/install/lib'
+        return '/home/firas/cyclone/cyclonedds/bld/lib/'
 
 def get_user_bit_lib_path():
     system = platform.system()
     if system == 'Linux':
-        return '/home/firas/cyclone/cdds_python/bit/build'
+        return '/home/firas/cyclone/cdds-python/bit/build'
     elif system == 'Darwin':
         return '/usr/local/lib'
     elif system in ['windows', 'Windows', 'win32']:
         return os.environ['CDDS_HOME']
     else:
-        return '/home/firas/cyclone/cdds_python/bit/build'
+        return '/home/firas/cyclone/cdds-python/bit/build'
 
 # system = platform.system()
 # if system in ['windows', 'Windows', 'win32']:
@@ -65,7 +65,7 @@ if system in ['windows', 'Windows', 'win32']:
     bit_lib_path = get_user_bit_lib_path() + os.sep + bit_lib
 else:
     cham_lib = 'libddsc' + get_lib_ext()
-    bit_lib = 'libddstubs' + get_lib_ext()
+    bit_lib = 'libddstubs' + get_lib_ext() 
     helloworld_lib = 'libddshelloworld' + get_lib_ext()
     cham_lib_path = get_user_lib_path() + os.sep + cham_lib
     bit_lib_path = get_user_bit_lib_path() + os.sep + bit_lib

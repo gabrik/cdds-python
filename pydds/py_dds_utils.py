@@ -10,7 +10,7 @@ import os, sys
 from pydds import *
 
 from idl_parser import parser
-from mesonbuild.msubprojects import foreach
+
 
 import inspect
 

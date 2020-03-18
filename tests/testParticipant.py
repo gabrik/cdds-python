@@ -1,5 +1,5 @@
 import unittest
-from psutil.tests.runner import ctypes
+
 
 
 __author__ = 'ADlink Technology'

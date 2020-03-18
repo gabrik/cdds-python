@@ -35,7 +35,7 @@ class DataWriterTest (unittest.TestCase):
         self.assertIsInstance(self.writer, Writer)
         
     def test_write(self):
-        idl_path = '/home/firas/cyclone/cdds_python/lexer/example.idl'
+        idl_path = '/home/firas/cyclone/cdds-python/lexer/example.idl'
         with open(idl_path, 'r') as idlf:
             contents = idlf.read()
             
