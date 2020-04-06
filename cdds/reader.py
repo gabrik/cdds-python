@@ -60,6 +60,8 @@ class Reader (Entity):
         self.parent = sub
         self.topic = topic
         
+        self.keygen = self.topic.gen_key
+        
         qos = self.rt.to_rw_qos(ps)
         
         self._qos = qos
@@ -102,6 +104,12 @@ class Reader (Entity):
     @qos.setter
     def qos(self, qos):
         super(Reader, self.__class__).qos.fset (self, qos)
+        
+    def get_subscriber_handle (self):
+        return self.rt.ddslib.dds_get_subscriber( self.handle)
+    
+    def get_subscriber (self):
+        return self.parent
 
     def on_data_available(self, fun):
         self.data_listener = fun
@@ -137,76 +145,233 @@ class Reader (Entity):
         else:
             return []
 
-    def read(self, selector):
-#         return self.read_n(MAX_SAMPLES, selector)
+    def read(self):
         ivec = (SampleInfo * MAX_SAMPLES)()
         infos = cast(ivec, POINTER(SampleInfo))
         samples = (c_void_p * MAX_SAMPLES)()
 
         nr = self.rt.ddslib.dds_read (self.handle, samples, infos, MAX_SAMPLES, MAX_SAMPLES)
-        i = 0
         
-        data = zip(samples, infos)
+        if nr < 0 :
+            raise Exception("Read n = {0} operation failed".format(nr))
+        
+        data = []
+        
+        for i in range(nr):
+            sp = cast(c_void_p(samples[i]), POINTER(DDSKeyValue))
+            if infos[i].valid_data:
+                
+                si =  infos[i]
+                data.append( _Sample(jsonpickle.decode(sp[0].value.decode(encoding='UTF-8') ),  si) )
+        
+        return data
+    
+    def read_mask (self, mask):
+        ivec = (SampleInfo * MAX_SAMPLES)()
+        infos = cast(ivec, POINTER(SampleInfo))
+        samples = (c_void_p * MAX_SAMPLES)()
+        
+        nr = self.rt.ddslib.dds_read_mask(self.handle, samples, infos, MAX_SAMPLES, MAX_SAMPLES, mask)
+        if nr < 0 :
+            raise Exception("Read n = {0} operation failed".format(nr))
+        
+        data = []
+        
+        for i in range(nr):
+            sp = cast(c_void_p(samples[i]), POINTER(DDSKeyValue))
+            if infos[i].valid_data:
+                si =  infos[i]
+                data.append( _Sample(jsonpickle.decode(sp[0].value.decode(encoding='UTF-8') ),  si) )
+        
         return data
 
+    def read_n(self, n):
+        ivec = (SampleInfo * n)()
+        infos = cast(ivec, POINTER(SampleInfo))
+        samples = (c_void_p * n)()
+
+        nr = self.rt.ddslib.dds_read (self.handle, samples, infos, n, n)
+        
+        if nr < 0 :
+            raise Exception("Read n = {0} operation failed".format(nr))
+        
+        data = []
+        
+        for i in range(nr):
+            sp = cast(c_void_p(samples[i]), POINTER(DDSKeyValue))
+            
+            if infos[i].valid_data:
+                si =  infos[i]
+                data.append( _Sample(jsonpickle.decode(sp[0].value.decode(encoding='UTF-8') ),  si) )
+        
+        return data
+    
+    def read_wl (self):
+        ivec = (SampleInfo * MAX_SAMPLES)()
+        infos = cast(ivec, POINTER(SampleInfo))
+        samples = (c_void_p * MAX_SAMPLES)()
+
+        nr = self.rt.ddslib.dds_read_wl (self.handle, samples, infos, MAX_SAMPLES, MAX_SAMPLES)
+        
+        if nr < 0 :
+            raise Exception("Read operation with loan failed, return code is {0}".format(nr))
+        
+        data = []
+        
+        for i in range(nr):
+            sp = cast(c_void_p(samples[i]), POINTER(DDSKeyValue))
+            if infos[i].valid_data:
+                v = sp[0].value.decode(encoding='UTF-8')
+                data.append(jsonpickle.decode(v))
+#             else:
+#                 kh = jsonpickle.decode(sp[0].key.decode(encoding='UTF-8'))
+#                 data.append(kh)
+        
+        rc = self.rt.ddslib.dds_return_loan(self.handle, samples, nr)
+                
+        if rc != 0 :
+            raise Exception("Error while return loan, retuen code = {}".format(rc))
+        
+        return zip(data, infos)
+    
+    def return_loan (self, samples, nr):
+        ret = self.rt.ddslib.dds_return_loan(self.handle, samples, nr)
+        return ret
+    
+    def lookup_instance (self, s):
+        gk = self.keygen(s)
+        
+        kh = KeyHolder(gk)
+        
+        key = jsonpickle.encode(kh)
+        value = jsonpickle.encode(s)
+        
+        sample = DDSKeyValue(key.encode(), value.encode())
+        result = self.rt.ddslib.dds_lookup_instance(self.handle, byref(sample))
+        
+        print("result ", result)
+        return result
+
+    #FIXME: Correct the implemntation of this function
+    def read_instance (self, instacne_handle):
+        ivec = (SampleInfo * MAX_SAMPLES)()
+        infos = cast(ivec, POINTER(SampleInfo))
+        samples = (c_void_p * MAX_SAMPLES)()
+        
+        nr = self.rt.ddslib.dds_read_instance (self.handle, samples, infos, MAX_SAMPLES, MAX_SAMPLES, c_uint64(instacne_handle))
+        
+        if nr < 0 :
+            raise Exception("Read n = {0} operation failed".format(nr))
+        
+        data = []
+        
+        for i in range(nr):
+            sp = cast(c_void_p(samples[i]), POINTER(DDSKeyValue))
+            if infos[i].valid_data:
+                
+                si =  infos[i]
+                data.append( _Sample(jsonpickle.decode(sp[0].value.decode(encoding='UTF-8') ),  si) )
+        
+        return data
+        
+    
     def sread_n(self, n, selector, timeout):
         if self.wait_for_data(selector, timeout):
             return self.read_n(n, selector)
         else:
             return []
-
-    def read_n(self, n, sample_selector):
-        ivec = (SampleInfo * n)()
-        infos = cast(ivec, POINTER(SampleInfo))
-        samples = (c_void_p * n)()
-
-        nr = self.rt.ddslib.dds_read (self.handle, samples, infos, n, sample_selector)
-        print("samples ", samples)
-        data = []
-        i = 0
         
-        resobj = zip(samples, infos)
-
-#         self.rt.ddslib.dds_return_loan(self.handle, samples, nr)
-
-        return resobj
+    def take(self):
+        ivec = (SampleInfo * MAX_SAMPLES)()
+        infos = cast(ivec, POINTER(SampleInfo))
+        samples = (c_void_p * MAX_SAMPLES)()
+        
+        data = []
+        try:
+          
+            nr = self.rt.ddslib.dds_take(self.handle, samples, infos, MAX_SAMPLES, MAX_SAMPLES)
+            if nr < 0:
+                raise ("Error while trying to take samples, return code = {0}".format(nr))
+            
+            for i in range(nr):
+                sp = cast(c_void_p(samples[i]), POINTER(DDSKeyValue))
+                if infos[i].valid_data:
+                    si =  infos[i]
+                    data.append( _Sample(jsonpickle.decode(sp[0].value.decode(encoding='UTF-8') ),  si) )
+        except:
+            raise Exception("Error in take operation, return code = {0}".format(nr))
+        return data
     
-
+    
+    def take_mask(self, mask):
+        ivec = (SampleInfo * MAX_SAMPLES)()
+        infos = cast(ivec, POINTER(SampleInfo))
+        samples = (c_void_p * MAX_SAMPLES)()
+        
+        data = []
+        try:
+          
+            nr = self.rt.ddslib.dds_take_mask(self.handle, samples, infos, MAX_SAMPLES, MAX_SAMPLES, mask)
+            if nr < 0:
+                raise ("Error while trying to take samples with mask, return code = {0}".format(nr))
+            
+            for i in range(nr):
+                sp = cast(c_void_p(samples[i]), POINTER(DDSKeyValue))
+                if infos[i].valid_data:
+                    si =  infos[i]
+                    data.append( _Sample(jsonpickle.decode(sp[0].value.decode(encoding='UTF-8') ),  si) )
+        except:
+            raise Exception("Error in take_mask operation, return code = {0}".format(nr))
+        return data
+    
+    def take_next(self):
+        ivec = (SampleInfo * MAX_SAMPLES)()
+        infos = cast(ivec, POINTER(SampleInfo))
+        samples = (c_void_p * MAX_SAMPLES)()
+        
+        data = []
+        try:
+          
+            nr = self.rt.ddslib.dds_take_next(self.handle, samples, infos)
+            if nr < 0:
+                raise ("Error while trying to take samples, return code = {0}".format(nr))
+            
+            for i in range(nr):
+                sp = cast(c_void_p(samples[i]), POINTER(DDSKeyValue))
+                if infos[i].valid_data:
+                    si =  infos[i]
+                    data.append( _Sample(jsonpickle.decode(sp[0].value.decode(encoding='UTF-8') ),  si) )
+        except:
+            raise Exception("Error in take operation, return code = {0}".format(nr))
+        return data
+    
+    def read_next(self):
+        ivec = (SampleInfo * MAX_SAMPLES)()
+        infos = cast(ivec, POINTER(SampleInfo))
+        samples = (c_void_p * MAX_SAMPLES)()
+        
+        data = []
+        try:
+          
+            nr = self.rt.ddslib.dds_read_next(self.handle, samples, infos)
+            if nr < 0:
+                raise ("Error while trying to take samples, return code = {0}".format(nr))
+            
+            for i in range(nr):
+                sp = cast(c_void_p(samples[i]), POINTER(DDSKeyValue))
+                if infos[i].valid_data:
+                    si =  infos[i]
+                    data.append( _Sample(jsonpickle.decode(sp[0].value.decode(encoding='UTF-8') ),  si) )
+        except:
+            raise Exception("Error in take operation, return code = {0}".format(nr))
+        return data
+    
+    
     def stake(self, selector, timeout):
         if self.wait_for_data(selector, timeout):
             return self.take(selector)
         else:
             return []
-
-    def take(self, selector):
-        #return self.take_n(MAX_SAMPLES, selector)
-        SampleVec_t = c_void_p * MAX_SAMPLES
-        samples = SampleVec_t()
-          
-        ivec = (SampleInfo * MAX_SAMPLES)()
-        sample_info = cast(ivec, POINTER(SampleInfo))
-          
-        sample_count = self.rt.ddslib.dds_take(self.handle, samples, sample_info, MAX_SAMPLES, MAX_SAMPLES)
-        if sample_count < 0:
-            print("Error while trying to take n_samples = ", sample_count)
-        else:
-            try:
-                data = []
-                for i in range(sample_count):
-                    si = SampleInfo()
-                    si =  sample_info[i]
-                    sp = samples.contents
-                     
-                    print("sp = ", sp)
-                    print("sp[0]= ", sp[0])
-                     
-                    data.append(jsonpickle.decode( (_Sample(sp, si)).decode(encoding='UTF-8') ))
-            finally:
-                pass
-          
-        return data
-    
-        
 
     def stake_n(self, n, selector, timeout):
         if self.wait_for_data(selector, timeout):
@@ -228,9 +393,9 @@ class Reader (Entity):
             if infos[i].valid_data:
                 v = sp[0].value.decode(encoding='UTF-8')
                 data.append(jsonpickle.decode(v))
-            else:
-                kh = jsonpickle.decode(sp[0].key.decode(encoding='UTF-8'))
-                data.append(kh)
+#             else:
+#                 kh = jsonpickle.decode(sp[0].key.decode(encoding='UTF-8'))
+#                 data.append(kh)
 
         self.rt.ddslib.dds_return_loan(self.handle, samples, nr)
         return zip(data, infos)
