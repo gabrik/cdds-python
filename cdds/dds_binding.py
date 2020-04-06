@@ -171,7 +171,7 @@ class SampleInfo(Structure):
 dds_entity_t = c_int32
 dds_time_t = c_int64
 dds_duration_t = c_int64
-dds_instance_handle_t = c_int64
+dds_instance_handle_t = c_uint64
 dds_domainid_t = c_uint32
 dds_sample_state_t = c_int
 dds_view_state_t = c_int
