@@ -45,6 +45,19 @@ class Writer (Entity):
     def qos(self, qos):
         super(Writer, self.__class__).qos.fset (self, qos)
         
+    def lookup_instance (self, s):
+        gk = self.keygen(s)
+        
+        kh = KeyHolder(gk)
+        
+        key = jsonpickle.encode(kh)
+        value = jsonpickle.encode(s)
+        
+        sample = DDSKeyValue(key.encode(), value.encode())
+        result = self.rt.ddslib.dds_lookup_instance(self.handle, byref(sample))
+        
+        return result
+        
     def write(self, s):
         gk = self.keygen(s)
         
@@ -64,5 +77,36 @@ class Writer (Entity):
         for x in xs:
             self.write(x)
 
-    def dispose_instance(self, s):
-        self.rt.ddslib.dds_dispose(self.handle, byref(s))
+    def dispose(self, s):
+        gk = self.keygen(s)
+         
+        kh = KeyHolder(gk)
+         
+        key = jsonpickle.encode(kh)
+         
+        value = jsonpickle.encode(s)
+         
+        sample = DDSKeyValue(key.encode(), value.encode())
+        rc = self.rt.ddslib.dds_dispose(self.handle, byref(sample))
+        if rc != 0 :
+            raise Exception("Dispose operation failed, return code = {0}".format(rc))
+        
+        return rc
+    
+    def write_dispose(self, s):
+        gk = self.keygen(s)
+         
+        kh = KeyHolder(gk)
+         
+        key = jsonpickle.encode(kh)
+         
+        value = jsonpickle.encode(s)
+         
+        sample = DDSKeyValue(key.encode(), value.encode())
+        rc = self.rt.ddslib.dds_writedispose(self.handle, byref(sample))
+        if rc != 0 :
+            raise Exception("Dispose operation failed, return code = {0}".format(rc))
+        
+        return rc
+    
+    
