@@ -78,7 +78,10 @@ class Runtime:
 
         self.ddslib.dds_get_datareader.restype = dds_entity_t
         self.ddslib.dds_get_datareader.argtypes = [dds_entity_t]
-
+        
+        self.ddslib.dds_lookup_instance.restype = dds_instance_handle_t
+        self.ddslib.dds_lookup_instance.argtypes = [dds_entity_t, c_void_p]
+        
         self.ddslib.dds_wait_for_acks.restype = dds_return_t
         self.ddslib.dds_wait_for_acks.argtypes = [dds_entity_t, dds_duration_t]
 
@@ -114,6 +117,9 @@ class Runtime:
         self.ddslib.dds_take.restype = c_int
         self.ddslib.dds_take.argtypes = [dds_entity_t, POINTER(c_void_p), POINTER(SampleInfo), c_size_t, c_uint32]
         
+        self.ddslib.dds_read.restype = c_int
+        self.ddslib.dds_read.argtypes = [dds_entity_t, POINTER(c_void_p), POINTER(SampleInfo), c_size_t, c_uint32]
+        
         self.ddslib.dds_read_mask.restype = c_int
         self.ddslib.dds_read_mask.argtypes = [dds_entity_t, POINTER(c_void_p), POINTER(SampleInfo), c_size_t, c_uint32, c_uint32]
 
@@ -121,18 +127,32 @@ class Runtime:
         self.ddslib.dds_take_mask.argtypes = [dds_entity_t, POINTER(c_void_p), POINTER(SampleInfo), c_size_t, c_uint32, c_uint32]
 
         # -- read / take with loan--
+        self.ddslib.dds_read_wl.restype = c_int
+        self.ddslib.dds_read_wl.argtypes = [dds_entity_t, POINTER(c_void_p), POINTER(SampleInfo), c_uint32]
+        
         self.ddslib.dds_read_mask_wl.restype = c_int
         self.ddslib.dds_read_mask_wl.argtypes = [dds_entity_t, POINTER(c_void_p), POINTER(SampleInfo), c_uint32, c_uint32]
 
         self.ddslib.dds_take_mask_wl.restype = c_int
         self.ddslib.dds_take_mask_wl.argtypes = [dds_entity_t, POINTER(c_void_p), POINTER(SampleInfo), c_uint32, c_uint32]
         
-
+        self.ddslib.dds_read_instance.restype = c_int
+        self.ddslib.dds_read_instance.argstypes = [dds_entity_t, POINTER(c_void_p), POINTER(SampleInfo), c_uint32, c_uint32, dds_instance_handle_t]
+        
         self.ddslib.dds_return_loan.restype = c_int
         self.ddslib.dds_return_loan.argtypes = [dds_entity_t, POINTER(c_void_p), c_size_t]
+        
+        self.ddslib.dds_take_next.restype = c_int
+        self.ddslib.dds_take_next.argtypes = [dds_entity_t, POINTER(c_void_p), POINTER(SampleInfo)]
+        
+        self.ddslib.dds_read_next.restype = c_int
+        self.ddslib.dds_read_next.argtypes = [dds_entity_t, POINTER(c_void_p), POINTER(SampleInfo)]
 
         # -- dispoase --
 
+        self.ddslib.dds_dispose.restype = dds_return_t
+        self.ddslib.dds_dispose.argtypes = [dds_entity_t, c_void_p]
+        
         self.ddslib.dds_dispose.restype = dds_return_t
         self.ddslib.dds_dispose.argtypes = [dds_entity_t, c_void_p]
 
