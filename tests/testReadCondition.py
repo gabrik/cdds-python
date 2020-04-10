@@ -33,14 +33,12 @@ class ReadConditionTest (unittest.TestCase):
         self.writer = Writer(self.pub, self.topic, [Reliable(), KeepLastHistory(10)])
         self.reader = Reader(self.sub, self.topic,  [Reliable(), KeepLastHistory(10)])
     
-    @unittest.skip("demonstrating skipping")
     def test_init_readCondition(self):
         mask = DDS_ANY_SAMPLE_STATE | DDS_ANY_INSTANCE_STATE | DDS_ANY_VIEW_STATE
         cond = ReadCondition( self.reader, mask)
         
         self.assertIsNotNone(cond, "ReadCondition creation faild")
     
-    @unittest.skip("demonstrating skipping")
     def test_get_mask(self):
         mask = DDS_ANY_SAMPLE_STATE | DDS_ANY_INSTANCE_STATE | DDS_ANY_VIEW_STATE
         cond = ReadCondition( self.reader, mask)
@@ -56,7 +54,6 @@ class ReadConditionTest (unittest.TestCase):
         self.assertIsNotNone(res_mask, "get mask returned a not valid object")
         self.assertEqual(res_mask.value, c_uint(mask).value, "get_msk retuened a wrong_value {0} != {1}".format(res_mask, mask ))
     
-    @unittest.skip("demonstrating skipping")
     def test_get_reader(self):
         mask = DDS_ANY_SAMPLE_STATE | DDS_ANY_INSTANCE_STATE | DDS_ANY_VIEW_STATE
         cond = ReadCondition( self.reader, mask)
@@ -66,7 +63,6 @@ class ReadConditionTest (unittest.TestCase):
         self.assertIsNotNone(handle, " get_reader_handle returned an invalid handle")
         self.assertEqual(handle, self.reader.handle, " get_reader_handle returned wrong handle") 
     
-    @unittest.skip("demonstrating skipping")
     def test_read(self):
         print("Begin test_read")
         idl_path = '/home/firas/cyclone/cdds-python/lexer/example.idl'
@@ -145,7 +141,6 @@ class ReadConditionTest (unittest.TestCase):
             
         self.assertEqual(cnt_samples, 2, "read_condition: read samples are not as expected")
     
-    @unittest.skip("demonstrating skipping")
     def test_read_n (self):
         print("Begin test_read_n")
         idl_path = '/home/firas/cyclone/cdds-python/lexer/example.idl'
@@ -192,7 +187,6 @@ class ReadConditionTest (unittest.TestCase):
                 raise Exception("Unexpected error:", sys.exc_info()[0])
             self.assertEqual(cnt_samples, 2, "Diferent number read by read_n(2) b")
     
-    @unittest.skip("demonstrating skipping")
     def test_read_mask (self):
         print("Begin test_read_mask")
         idl_path = '/home/firas/cyclone/cdds-python/lexer/example.idl'
@@ -322,7 +316,6 @@ class ReadConditionTest (unittest.TestCase):
             
         self.assertEqual(cnt_samples, 8, "Wrong number of samples read")
     
-    @unittest.skip("demonstrating skipping")
     def test_read_instacne (self):
         print("Begin test_read_instance")
         idl_path = '/home/firas/cyclone/cdds-python/lexer/example.idl'
@@ -418,7 +411,6 @@ class ReadConditionTest (unittest.TestCase):
                 raise Exception("Unexpected error:", sys.exc_info()[0])
         self.assertEqual(cnt_samples, 1, "read samples are not as expected")
     
-    @unittest.skip("demonstrating skipping")
     def test_take (self):
         print("Begin test_read")
         idl_path = '/home/firas/cyclone/cdds-python/lexer/example.idl'
