@@ -178,6 +178,12 @@ class Runtime:
         # -- Condition Operations --
         self.ddslib.dds_create_readcondition.restype = dds_entity_t
         self.ddslib.dds_create_readcondition.argtypes = [dds_entity_t, c_uint32]
+        
+        self.ddslib.dds_get_mask.restype = dds_return_t
+        self.ddslib.dds_get_mask.argstypes = [dds_entity_t, c_void_p]
+        
+        self.ddslib.dds_get_datareader.restype = dds_entity_t
+        self.ddslib.dds_get_datareader.argstypes = [dds_entity_t]
 
         # -- Listeners --
         self.ddslib.dds_create_listener.restype = dds_listener_p_t
