@@ -10,7 +10,6 @@ from idl_parser import parser
 
 parser_ = parser.IDLParser()
 
-from idl_parser import parser
 import cdds.py_dds_utils as utils
 
 import time
@@ -119,8 +118,6 @@ class DataReaderTest (unittest.TestCase):
                             sample_read = True
                             sam = s[0]
                             cnt_samples += 1
-                            print ("sam = ", sam)
-                            print ("type(sam) = ", type(sam))
                             val_ = (HelloWorldData_Msg)(**sam)
                             print('********************************************************')
                             print('******************Read data was**********************')
@@ -301,9 +298,6 @@ class DataReaderTest (unittest.TestCase):
                 print ("Invalid data read")
                 
         self.assertEqual(cnt_samples, 5, "read samples are not as expected")
-    
-    #FIXME: Correct the implemntation of this test  
-    
     
     def test_read_instacne (self):
         print("Begin test_read_instance")
