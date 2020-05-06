@@ -179,6 +179,9 @@ class Runtime:
         self.ddslib.dds_create_readcondition.restype = dds_entity_t
         self.ddslib.dds_create_readcondition.argtypes = [dds_entity_t, c_uint32]
         
+        self.ddslib.dds_create_querycondition.restype = dds_entity_t
+        self.ddslib.dds_create_querycondition.argtypes = [dds_entity_t, c_uint32, CFUNCTYPE(c_bool, c_void_p)]
+        
         self.ddslib.dds_create_guardcondition.restype = dds_entity_t
         self.ddslib.dds_create_guardcondition.argstypes = [dds_entity_t]
         
