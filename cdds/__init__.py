@@ -10,4 +10,3 @@ from .sub import *
 from .pub import *
 from .reader import *
 from .writer import *
-from .policy import *
