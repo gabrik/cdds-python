@@ -22,8 +22,12 @@ class Runtime:
 
         self.kv_topic = None
         self.v_topic = None
-
-
+        # -- Entity Operations --
+        self.ddslib.dds_delete.restype = dds_return_t
+        self.ddslib.dds_delete.argtypes = [dds_entity_t]
+        
+        self.ddslib.dds_enable.restype = dds_return_t
+        self.ddslib.dds_enable.argtypes = [dds_entity_t]
         # -- Participant Operations --
         self.ddslib.dds_create_participant.restype = dds_entity_t
         self.ddslib.dds_create_participant.argtypes = [dds_domainid_t, dds_qos_p_t, dds_listener_p_t]
@@ -40,7 +44,9 @@ class Runtime:
 
         self.ddslib.dds_find_topic.restype = dds_entity_t
         self.ddslib.dds_find_topic.argtypes = [dds_entity_t, c_char_p]
-
+        
+        self.ddslib.dds_get_name.restype = dds_return_t
+        self.ddslib.dds_get_name.argtypes = [dds_entity_t, c_char_p, c_int]
 
         # -- Publisher / Subscriber Operations --
 
@@ -59,6 +65,9 @@ class Runtime:
         # -- Reader  / Writer Operations --
         self.ddslib.dds_create_reader.restype = dds_entity_t
         self.ddslib.dds_create_reader.argtypes = [dds_entity_t, dds_entity_t, dds_qos_p_t, dds_listener_p_t]
+
+        self.ddslib.dds_lookup_instance.restype = dds_instance_handle_t
+        self.ddslib.dds_lookup_instance.argtypes = [dds_entity_t, c_void_p]
 
         self.ddslib.dds_reader_wait_for_historical_data.restype = dds_return_t
         self.ddslib.dds_reader_wait_for_historical_data.argtypes = [dds_entity_t, dds_duration_t]
@@ -98,24 +107,43 @@ class Runtime:
         self.ddslib.dds_qset_destination_order.argtypes = [dds_qos_p_t, c_uint32]
 
         # -- read / take --
+        self.ddslib.dds_take.restype = c_int
+        self.ddslib.dds_take.argtypes = [dds_entity_t, POINTER(c_void_p), POINTER(SampleInfo), c_size_t, c_uint32]
+
+        self.ddslib.dds_read.restype = c_int
+        self.ddslib.dds_read.argtypes = [dds_entity_t, POINTER(c_void_p), POINTER(SampleInfo), c_size_t, c_uint32]
+
         self.ddslib.dds_read_mask.restype = c_int
         self.ddslib.dds_read_mask.argtypes = [dds_entity_t, POINTER(c_void_p), POINTER(SampleInfo), c_size_t, c_uint32, c_uint32]
 
         self.ddslib.dds_take_mask.restype = c_int
         self.ddslib.dds_take_mask.argtypes = [dds_entity_t, POINTER(c_void_p), POINTER(SampleInfo), c_size_t, c_uint32,
                                               c_uint32]
-
         # -- read / take with loan--
+        self.ddslib.dds_read_wl.restype = c_int
+        self.ddslib.dds_read_wl.argtypes = [dds_entity_t, POINTER(c_void_p), POINTER(SampleInfo), c_uint32]
+        
         self.ddslib.dds_read_mask_wl.restype = c_int
         self.ddslib.dds_read_mask_wl.argtypes = [dds_entity_t, POINTER(c_void_p), POINTER(SampleInfo), c_uint32, c_uint32]
-
+        
+        self.ddslib.dds_read_instance.restype = c_int
+        self.ddslib.dds_read_instance.argstypes = [dds_entity_t, POINTER(c_void_p), POINTER(SampleInfo), c_uint32, c_uint32, dds_instance_handle_t]
+        
         self.ddslib.dds_take_mask_wl.restype = c_int
         self.ddslib.dds_take_mask_wl.argtypes = [dds_entity_t, POINTER(c_void_p), POINTER(SampleInfo), c_uint32, c_uint32]
 
         self.ddslib.dds_return_loan.restype = c_int
         self.ddslib.dds_return_loan.argtypes = [dds_entity_t, POINTER(c_void_p), c_size_t]
 
+        self.ddslib.dds_take_next.restype = c_int
+        self.ddslib.dds_take_next.argtypes = [dds_entity_t, POINTER(c_void_p), POINTER(SampleInfo)]
+
+        self.ddslib.dds_read_next.restype = c_int
+        self.ddslib.dds_read_next.argtypes = [dds_entity_t, POINTER(c_void_p), POINTER(SampleInfo)]
+
         # -- dispoase --
+        self.ddslib.dds_dispose.restype = dds_return_t
+        self.ddslib.dds_dispose.argtypes = [dds_entity_t, c_void_p]
 
         self.ddslib.dds_dispose.restype = dds_return_t
         self.ddslib.dds_dispose.argtypes = [dds_entity_t, c_void_p]
@@ -123,19 +151,15 @@ class Runtime:
         self.ddslib.dds_write.restype = dds_return_t
         self.ddslib.dds_write.argtypes = [dds_entity_t, c_void_p]
 
-        # DDS Entity Delete
-        self.ddslib.dds_delete.restype = dds_return_t
-        self.ddslib.dds_delete.argtypes = [dds_entity_t]
-
         # -- Waitset Operations --
         # create
         self.ddslib.dds_create_waitset.restype = dds_entity_t
         self.ddslib.dds_create_waitset.argtypes = [dds_entity_t]
 
-
         # attach / detach
         self.ddslib.dds_waitset_attach.restype = dds_return_t
         self.ddslib.dds_waitset_attach.argtypes = [dds_entity_t, dds_entity_t, dds_attach_t]
+
         self.ddslib.dds_waitset_detach.restype = dds_return_t
         self.ddslib.dds_waitset_detach.argtypes = [dds_entity_t, dds_entity_t]
 
@@ -214,6 +238,11 @@ class Runtime:
 
     def get_simple_value_type_support(self):
         return self.stublib.dds_bit_SValue_desc
+    def get_hello_world_key_value_type_support(self):
+        return self.helloworld_lib.HelloWorldDataMsg_keys
+
+    def get_hello_world_simple_value_type_support(self):
+        return self.helloworld_lib.HelloWorldData_Msg_desc
 
     def to_rw_qos(self, ps):
         if ps is None:
