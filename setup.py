@@ -8,5 +8,5 @@ setup(
     packages=['cdds', ],
     author='kydos',
     url='https://github.com/atolab/python-cdds',
-    install_requires=['jsonpickle']
+    install_requires=['jsonpickle', 'idl_parser']
 )
