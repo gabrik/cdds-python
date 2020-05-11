@@ -19,6 +19,7 @@ class Runtime:
 
         self.ddslib = CDLL(cham_lib_path)
         self.stublib = CDLL(bit_lib_path)
+        self.helloworld_lib = CDLL(helloworld_lib_path)
 
         self.kv_topic = None
         self.v_topic = None
