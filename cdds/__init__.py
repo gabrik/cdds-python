@@ -9,4 +9,6 @@ from .flexy_topic import *
 from .sub import *
 from .pub import *
 from .reader import *
+from .flexy_reader import *
 from .writer import *
+from .flexy_writer import *
