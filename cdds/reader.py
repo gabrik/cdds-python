@@ -220,6 +220,20 @@ class Reader (Entity):
             raise Exception("Error while return loan, retuen code = {}".format(rc))
         
         return data
+    
+    def lookup_instance (self, s):
+        gk = self.keygen(s)
+        
+        kh = KeyHolder(gk)
+        
+        key = jsonpickle.encode(kh)
+        value = jsonpickle.encode(s)
+        
+        sample = DDSKeyValue(key.encode(), value.encode())
+        result = self.rt.ddslib.dds_lookup_instance(self.handle, byref(sample))
+        
+        print("result ", result)
+        return result
 
     def sread_n(self, n, selector, timeout):
         if self.wait_for_data(selector, timeout):
