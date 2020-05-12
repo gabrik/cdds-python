@@ -311,9 +311,27 @@ class Reader (Entity):
             raise Exception("Error in take_mask operation, return code = {0}".format(nr))
         return data
     
+    def take_next(self):
+        ivec = (SampleInfo * MAX_SAMPLES)()
+        infos = cast(ivec, POINTER(SampleInfo))
+        samples = (c_void_p * MAX_SAMPLES)()
         
-        resobj = zip(samples, infos)
-        return resobj
+        data = []
+        try:
+          
+            nr = self.rt.ddslib.dds_take_next(self.handle, samples, infos)
+            if nr < 0:
+                raise ("Error while trying to take samples, return code = {0}".format(nr))
+            
+            for i in range(nr):
+                sp = cast(c_void_p(samples[i]), POINTER(DDSKeyValue))
+                if infos[i].valid_data:
+                    si =  infos[i]
+                    data.append( _Sample(jsonpickle.decode(sp[0].value.decode(encoding='UTF-8') ),  si) )
+        except:
+            raise Exception("Error in take operation, return code = {0}".format(nr))
+        return data
+    
     
 
     def stake(self, selector, timeout):
