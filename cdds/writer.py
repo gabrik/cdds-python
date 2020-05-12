@@ -45,6 +45,16 @@ class Writer (Entity):
     def qos(self, qos):
         super(Writer, self.__class__).qos.fset (self, qos)
         
+    def lookup_instance (self, s):
+        gk = self.keygen(s)
+        kh = KeyHolder(gk)
+        key = jsonpickle.encode(kh)
+        value = jsonpickle.encode(s)
+        sample = DDSKeyValue(key.encode(), value.encode())
+        result = self.rt.ddslib.dds_lookup_instance(self.handle, byref(sample))
+        
+        return result
+        
     def write(self, s):
         gk = self.keygen(s)
         
