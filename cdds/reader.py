@@ -196,6 +196,30 @@ class Reader (Entity):
                 data.append( _Sample(jsonpickle.decode(sp[0].value.decode(encoding='UTF-8') ),  si) )
         
         return data
+    
+    def read_wl (self):
+        ivec = (SampleInfo * MAX_SAMPLES)()
+        infos = cast(ivec, POINTER(SampleInfo))
+        samples = (c_void_p * MAX_SAMPLES)()
+        nr = self.rt.ddslib.dds_read_wl (self.handle, samples, infos, MAX_SAMPLES, MAX_SAMPLES)
+        
+        if nr < 0 :
+            raise Exception("Read operation with loan failed, return code is {0}".format(nr))
+        
+        data = []
+        
+        for i in range(nr):
+            sp = cast(c_void_p(samples[i]), POINTER(DDSKeyValue))
+            if infos[i].valid_data:
+                si =  infos[i]
+                data.append( _Sample(jsonpickle.decode(sp[0].value.decode(encoding='UTF-8') ),  si) )
+        
+        rc = self.rt.ddslib.dds_return_loan(self.handle, samples, nr)
+                
+        if rc != 0 :
+            raise Exception("Error while return loan, retuen code = {}".format(rc))
+        
+        return data
 
     def sread_n(self, n, selector, timeout):
         if self.wait_for_data(selector, timeout):
