@@ -376,14 +376,11 @@ class Reader (Entity):
         for i in range(nr):
             sp = cast(c_void_p(samples[i]), POINTER(self.topic.data_type))
             if infos[i].valid_data:
-                v = sp[0].value.decode(encoding='UTF-8')
-                data.append(jsonpickle.decode(v))
-            else:
-                kh = jsonpickle.decode(sp[0].key.decode(encoding='UTF-8'))
-                data.append(kh)
+                si =  infos[i]
+                data.append( _Sample(jsonpickle.decode(sp[0].value.decode(encoding='UTF-8') ),  si) )
 
         self.rt.ddslib.dds_return_loan(self.handle, samples, nr)
-        return zip(data, infos)
+        return data
 
     def wait_history(self, timeout):
         return self.rt.ddslib.dds_reader_wait_for_historical_data(self.handle, timeout)
