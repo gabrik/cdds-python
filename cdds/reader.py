@@ -176,8 +176,25 @@ class Reader (Entity):
             raise Exception("Read_instance exception whlie return loan rc = {0} operation failed".format(nr))
         
         return data
+
+    def read_n(self, n):
+        ivec = (SampleInfo * n)()
+        infos = cast(ivec, POINTER(SampleInfo))
+        samples = (c_void_p * n)()
+
+        nr = self.rt.ddslib.dds_read (self.handle, samples, infos, n, n)
         
-        data = zip(samples, infos)
+        if nr < 0 :
+            raise Exception("Read n = {0} operation failed".format(nr))
+        
+        data = []
+        for i in range(nr):
+            sp = cast(c_void_p(samples[i]), POINTER(DDSKeyValue))
+            
+            if infos[i].valid_data:
+                si =  infos[i]
+                data.append( _Sample(jsonpickle.decode(sp[0].value.decode(encoding='UTF-8') ),  si) )
+        
         return data
 
     def sread_n(self, n, selector, timeout):
