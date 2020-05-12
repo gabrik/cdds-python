@@ -264,9 +264,6 @@ class Reader (Entity):
             return self.read_n(n, selector)
         else:
             return []
-
-    def read_n(self, n, sample_selector):
-        ivec = (SampleInfo * n)()
         
     def take(self):
         ivec = (SampleInfo * MAX_SAMPLES)()
@@ -320,6 +317,27 @@ class Reader (Entity):
         try:
           
             nr = self.rt.ddslib.dds_take_next(self.handle, samples, infos)
+            if nr < 0:
+                raise ("Error while trying to take samples, return code = {0}".format(nr))
+            
+            for i in range(nr):
+                sp = cast(c_void_p(samples[i]), POINTER(DDSKeyValue))
+                if infos[i].valid_data:
+                    si =  infos[i]
+                    data.append( _Sample(jsonpickle.decode(sp[0].value.decode(encoding='UTF-8') ),  si) )
+        except:
+            raise Exception("Error in take operation, return code = {0}".format(nr))
+        return data
+    
+    def read_next(self):
+        ivec = (SampleInfo * MAX_SAMPLES)()
+        infos = cast(ivec, POINTER(SampleInfo))
+        samples = (c_void_p * MAX_SAMPLES)()
+        
+        data = []
+        try:
+          
+            nr = self.rt.ddslib.dds_read_next(self.handle, samples, infos)
             if nr < 0:
                 raise ("Error while trying to take samples, return code = {0}".format(nr))
             
