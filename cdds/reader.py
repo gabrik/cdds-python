@@ -235,6 +235,30 @@ class Reader (Entity):
         print("result ", result)
         return result
 
+    def read_instance (self, instacne_handle):
+        ivec = (SampleInfo * MAX_SAMPLES)()
+        infos = cast(ivec, POINTER(SampleInfo))
+        samples = (c_void_p * MAX_SAMPLES)()
+        
+        nr = self.rt.ddslib.dds_read_instance (self.handle, samples, infos, MAX_SAMPLES, MAX_SAMPLES, c_uint64(instacne_handle))
+        
+        if nr < 0 :
+            raise Exception("Read n = {0} operation failed".format(nr))
+        
+        data = []
+        
+        for i in range(nr):
+            sp = cast(c_void_p(samples[i]), POINTER(DDSKeyValue))
+            if infos[i].valid_data:
+                
+                si =  infos[i]
+                data.append( _Sample(jsonpickle.decode(sp[0].value.decode(encoding='UTF-8') ),  si) )
+                
+        rc = self.rt.ddslib.dds_return_loan(self.handle, samples, nr)
+        if rc != 0:
+            raise Exception("Read_instance exception whlie return loan rc = {0} operation failed".format(nr))
+        
+        return data
     def sread_n(self, n, selector, timeout):
         if self.wait_for_data(selector, timeout):
             return self.read_n(n, selector)
@@ -261,34 +285,6 @@ class Reader (Entity):
         else:
             return []
 
-    def take(self, selector):
-        #return self.take_n(MAX_SAMPLES, selector)
-        SampleVec_t = c_void_p * MAX_SAMPLES
-        samples = SampleVec_t()
-          
-        ivec = (SampleInfo * MAX_SAMPLES)()
-        sample_info = cast(ivec, POINTER(SampleInfo))
-          
-        sample_count = self.rt.ddslib.dds_take(self.handle, samples, sample_info, MAX_SAMPLES, MAX_SAMPLES)
-        if sample_count < 0:
-            print("Error while trying to take n_samples = ", sample_count)
-        else:
-            try:
-                data = []
-                for i in range(sample_count):
-                    si = SampleInfo()
-                    si =  sample_info[i]
-                    sp = samples.contents
-                     
-                    print("sp = ", sp)
-                    print("sp[0]= ", sp[0])
-                     
-                    data.append(jsonpickle.decode( (_Sample(sp, si)).decode(encoding='UTF-8') ))
-            finally:
-                pass
-          
-        return data
-    
     def stake_n(self, n, selector, timeout):
         if self.wait_for_data(selector, timeout):
             return self.take_n(n, selector)
