@@ -133,14 +133,49 @@ class Reader (Entity):
         else:
             return []
 
-    def read(self, selector):
-#         return self.read_n(MAX_SAMPLES, selector)
+    def read(self):
+        ivec = (SampleInfo * MAX_SAMPLES)()
+        infos = cast(ivec, POINTER(SampleInfo))
+        
+        samples = (c_void_p * MAX_SAMPLES)()
+        nr = self.rt.ddslib.dds_read (self.handle, samples, infos, MAX_SAMPLES, MAX_SAMPLES)
+        if nr < 0 :
+            raise Exception("Read n = {0} operation failed".format(nr))
+        data = []
+        for i in range(nr):
+            sp = cast(c_void_p(samples[i]), POINTER(DDSKeyValue))
+            if infos[i].valid_data:
+                
+                si =  infos[i]
+                data.append( _Sample(jsonpickle.decode(sp[0].value.decode(encoding='UTF-8') ),  si) )
+                
+        rc = self.rt.ddslib.dds_return_loan(self.handle, samples, nr)
+        if rc != 0:
+            raise Exception("Read_instance exception whlie return loan rc = {0} operation failed".format(nr))
+        return data
+    
+    def read_mask (self, mask):
         ivec = (SampleInfo * MAX_SAMPLES)()
         infos = cast(ivec, POINTER(SampleInfo))
         samples = (c_void_p * MAX_SAMPLES)()
-
-        nr = self.rt.ddslib.dds_read (self.handle, samples, infos, MAX_SAMPLES, MAX_SAMPLES)
-        i = 0
+        
+        nr = self.rt.ddslib.dds_read_mask(self.handle, samples, infos, MAX_SAMPLES, MAX_SAMPLES, mask)
+        if nr < 0 :
+            raise Exception("Read n = {0} operation failed".format(nr))
+        
+        data = []
+        
+        for i in range(nr):
+            sp = cast(c_void_p(samples[i]), POINTER(DDSKeyValue))
+            if infos[i].valid_data:
+                si =  infos[i]
+                data.append( _Sample(jsonpickle.decode(sp[0].value.decode(encoding='UTF-8') ),  si) )
+                
+        rc = self.rt.ddslib.dds_return_loan(self.handle, samples, nr)
+        if rc != 0:
+            raise Exception("Read_instance exception whlie return loan rc = {0} operation failed".format(nr))
+        
+        return data
         
         data = zip(samples, infos)
         return data
