@@ -59,6 +59,8 @@ class Reader (Entity):
         self.parent = sub
         self.topic = topic
         
+        self.keygen = self.topic.gen_key
+        
         qos = self.rt.to_rw_qos(ps)
         
         self._qos = qos
@@ -74,6 +76,7 @@ class Reader (Entity):
         self.rt.ddslib.dds_lset_subscription_matched(self.listener_handle, trampoline_on_subscription_matched)
         self.handle = self.rt.ddslib.dds_create_reader(sub.handle, self.topic.handle, self.qos, self.listener_handle)
         assert (self.handle > 0)
+#         self.rt.register_data_listener(self.handle, self.__handle_data)
 
     @property
     def handle(self):
