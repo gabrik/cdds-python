@@ -175,11 +175,23 @@ class Runtime:
         self.ddslib.dds_create_querycondition.restype = dds_entity_t
         self.ddslib.dds_create_querycondition.argtypes = [dds_entity_t, c_uint32, CFUNCTYPE(c_bool, c_void_p)]
         
+        self.ddslib.dds_create_guardcondition.restype = dds_entity_t
+        self.ddslib.dds_create_guardcondition.argstypes = [dds_entity_t]
+        
         self.ddslib.dds_get_mask.restype = dds_return_t
         self.ddslib.dds_get_mask.argstypes = [dds_entity_t, c_void_p]
         
         self.ddslib.dds_get_datareader.restype = dds_entity_t
         self.ddslib.dds_get_datareader.argstypes = [dds_entity_t]
+        self.ddslib.dds_set_guardcondition.restype = dds_return_t
+        self.ddslib.dds_set_guardcondition.argstypes = [dds_entity_t, c_bool]
+        
+        self.ddslib.dds_read_guardcondition.restype = dds_return_t
+        self.ddslib.dds_read_guardcondition.argstypes = [dds_entity_t, POINTER(c_bool)]
+        
+        self.ddslib.dds_take_guardcondition.restype = dds_return_t
+        self.ddslib.dds_take_guardcondition.argstypes = [dds_entity_t, POINTER(c_bool)]
+
         # -- Listeners --
         self.ddslib.dds_create_listener.restype = dds_listener_p_t
         self.ddslib.dds_create_listener.argtypes = [c_void_p]
