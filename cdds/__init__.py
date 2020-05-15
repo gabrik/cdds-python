@@ -3,6 +3,7 @@ __author__ = 'Angelo Corsaro'
 from .runtime import Runtime
 from .policy import *
 from .entity import *
+from .waitset import *
 from .participant import *
 from .topic import *
 from .flexy_topic import *
