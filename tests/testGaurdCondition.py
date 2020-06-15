@@ -37,73 +37,73 @@ class GaurdConditionTest (unittest.TestCase):
         self.rt.close()
         
     def testInitGaurdCond(self):
-        gc =  GaurdCondition(self.dp)
+        gcond =  GaurdCondition(self.dp)
         
-        self.assertIsNotNone(gc, "Gaurd condition is not initialized correctly")
-        self.assertIsInstance (gc, GaurdCondition, "Created gaurd condition is not of the good type" )
+        self.assertIsNotNone(gcond, "Gaurd condition is not initialized correctly")
+        self.assertIsInstance (gcond, GaurdCondition, "Created gaurd condition is not of the good type" )
         
     def testSetGuardCond(self):
-        gc =  GaurdCondition(self.dp)
+        cond =  GaurdCondition(self.dp)
         
-        self.assertIsNotNone(gc, "Gaurd condition is not initialized correctly")
-        self.assertIsInstance (gc, GaurdCondition, "Created gaurd condition is not of the good type" )
+        self.assertIsNotNone(cond, "Gaurd condition is not initialized correctly")
+        self.assertIsInstance (cond, GaurdCondition, "Created gaurd condition is not of the good type" )
         
-        rt = gc.set_guard_condition(True)
+        rt = cond.set_guard_condition(True)
         self.assertTrue(rt, "set_gaurdcondition did not return the expected result")
         
-        rt = gc.set_guard_condition(False)
+        rt = cond.set_guard_condition(False)
         self.assertTrue(rt, "set_gaurdcondition did not return the expected result")
         
     def testReadGuardCond(self):
-        gc =  GaurdCondition(self.dp)
+        gcond =  GaurdCondition(self.dp)
         
-        self.assertIsNotNone(gc, "Gaurd condition is not initialized correctly")
-        self.assertIsInstance (gc, GaurdCondition, "Created gaurd condition is not of the good type" )
+        self.assertIsNotNone(gcond, "Gaurd condition is not initialized correctly")
+        self.assertIsInstance (gcond, GaurdCondition, "Created gaurd condition is not of the good type" )
         
-        rt = gc.set_guard_condition(True)
+        rt = gcond.set_guard_condition(True)
         self.assertTrue(rt, "set_gaurdcondition did not return the expected result")
         
-        triggered = gc.read_trigger()
+        triggered = gcond.read_trigger()
         
         self.assertIsNotNone(triggered, " read guard condition did not get expected object")
         self.assertTrue(triggered, "Read gaurdCondition did not return expected value")
         
-        rt = gc.set_guard_condition(False)
+        rt = gcond.set_guard_condition(False)
         self.assertTrue(rt, "set_gaurdcondition did not return the expected result")
         
-        triggered = gc.read_trigger()
+        triggered = gcond.read_trigger()
         
         self.assertIsNotNone(triggered, " read guard condition did not get expected object")
         self.assertFalse(triggered, "Read gaurdCondition did not return expected value")
         
     def testTakeGuardCond(self):
-        gc =  GaurdCondition(self.dp)
+        gcond =  GaurdCondition(self.dp)
         
-        self.assertIsNotNone(gc, "Gaurd condition is not initialized correctly")
-        self.assertIsInstance (gc, GaurdCondition, "Created gaurd condition is not of the good type" )
+        self.assertIsNotNone(gcond, "Gaurd condition is not initialized correctly")
+        self.assertIsInstance (gcond, GaurdCondition, "Created gaurd condition is not of the good type" )
         
-        rt = gc.set_guard_condition(True)
+        rt = gcond.set_guard_condition(True)
         self.assertTrue(rt, "set_gaurdcondition did not return the expected result")
         
-        triggered = gc.take_trigger()
+        triggered = gcond.take_trigger()
         
         self.assertIsNotNone(triggered, " take guard condition did not get expected object")
         self.assertTrue(triggered, "Take gaurdCondition did not return expected value")
         
-        triggered = gc.read_trigger()
+        triggered = gcond.read_trigger()
         
         self.assertIsNotNone(triggered, " read guard condition did not get expected object")
         self.assertFalse(triggered, "Read gaurdCondition did not return expected value")
         
-        rt = gc.set_guard_condition(False)
+        rt = gcond.set_guard_condition(False)
         self.assertTrue(rt, "set_gaurdcondition did not return the expected result")
         
-        triggered = gc.take_trigger()
+        triggered = gcond.take_trigger()
         
         self.assertIsNotNone(triggered, " take guard condition did not get expected object")
         self.assertFalse(triggered, "take gaurdCondition did not return expected value")
         
-        triggered = gc.read_trigger()
+        triggered = gcond.read_trigger()
         
         self.assertIsNotNone(triggered, " read guard condition did not get expected object")
         self.assertFalse(triggered, "Read gaurdCondition did not return expected value")
