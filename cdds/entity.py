@@ -19,7 +19,7 @@ class Entity(object):
         return rc
 
     def delete(self):
-        rc = self.rt.ddslib.dds_delete()
+        rc = self.rt.ddslib.dds_delete(self.handle)
         return rc
     
     def get_participant(self):
