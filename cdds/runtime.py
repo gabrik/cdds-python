@@ -1,5 +1,6 @@
 from ctypes import *
 from .dds_binding import *
+
 the_runtime = None
 
 class Runtime:
@@ -176,21 +177,21 @@ class Runtime:
         self.ddslib.dds_create_querycondition.argtypes = [dds_entity_t, c_uint32, CFUNCTYPE(c_bool, c_void_p)]
         
         self.ddslib.dds_create_guardcondition.restype = dds_entity_t
-        self.ddslib.dds_create_guardcondition.argstypes = [dds_entity_t]
+        self.ddslib.dds_create_guardcondition.argtypes = [dds_entity_t]
         
         self.ddslib.dds_get_mask.restype = dds_return_t
-        self.ddslib.dds_get_mask.argstypes = [dds_entity_t, c_void_p]
+        self.ddslib.dds_get_mask.argtypes = [dds_entity_t, c_void_p]
         
         self.ddslib.dds_get_datareader.restype = dds_entity_t
-        self.ddslib.dds_get_datareader.argstypes = [dds_entity_t]
+        self.ddslib.dds_get_datareader.argtypes = [dds_entity_t]
         self.ddslib.dds_set_guardcondition.restype = dds_return_t
-        self.ddslib.dds_set_guardcondition.argstypes = [dds_entity_t, c_bool]
+        self.ddslib.dds_set_guardcondition.argtypes = [dds_entity_t, c_bool]
         
         self.ddslib.dds_read_guardcondition.restype = dds_return_t
-        self.ddslib.dds_read_guardcondition.argstypes = [dds_entity_t, POINTER(c_bool)]
+        self.ddslib.dds_read_guardcondition.argtypes = [dds_entity_t, POINTER(c_bool)]
         
         self.ddslib.dds_take_guardcondition.restype = dds_return_t
-        self.ddslib.dds_take_guardcondition.argstypes = [dds_entity_t, POINTER(c_bool)]
+        self.ddslib.dds_take_guardcondition.argtypes = [dds_entity_t, POINTER(c_bool)]
 
         # -- Listeners --
         self.ddslib.dds_create_listener.restype = dds_listener_p_t
@@ -207,6 +208,33 @@ class Runtime:
 
         self.ddslib.dds_lset_subscription_matched.restype = None
         self.ddslib.dds_lset_subscription_matched.argtypes = [dds_listener_p_t, SUBSCRIPTION_MATCHED_PROTO]
+        
+        self.ddslib.dds_lset_publication_matched.restype = None
+        self.ddslib.dds_lset_publication_matched.argtypes = [dds_listener_p_t, PUBLICATION_MATCHED_PROTO]
+        
+        self.ddslib.dds_lset_requested_deadline_missed.restype = None
+        self.ddslib.dds_lset_requested_deadline_missed.argtypes = [dds_listener_p_t, REQUESTED_DEADLINE_MISSED_PROTO]
+        
+        self.ddslib.dds_lset_sample_rejected.restype = None
+        self.ddslib.dds_lset_sample_rejected.argtypes = [dds_listener_p_t, SAMPLE_REJECTED_PROTO]
+        
+        self.ddslib.dds_lset_sample_lost.restype = None
+        self.ddslib.dds_lset_sample_lost.argtypes = [dds_listener_p_t, SAMPLE_LOST_PROTO]
+        
+        self.ddslib.dds_lset_requested_incompatible_qos.restype = None
+        self.ddslib.dds_lset_requested_incompatible_qos.argtypes = [dds_listener_p_t, REQUESTED_INCOMPATIBLE_QOS_PROTO]
+        
+        self.ddslib.dds_lset_offered_incompatible_qos.restypes = None
+        self.ddslib.dds_lset_offered_incompatible_qos.argtypes = [dds_listener_p_t, OFFERED_INCOMPATIBLE_QOS_PROTO]
+        
+        self.ddslib.dds_lset_liveliness_lost.restype = None
+        self.ddslib.dds_lset_liveliness_lost.argtypes = [dds_listener_p_t, LIVELINESS_LOST_PROTO]
+        
+        self.ddslib.dds_lset_offered_deadline_missed.restype = None
+        self.ddslib.dds_lset_offered_deadline_missed.argtypes = [dds_listener_p_t, OFFERED_DEADLINE_MISSED_PROTO]
+        
+        self.ddslib.dds_lset_data_on_readers.restype = None
+        self.ddslib.dds_lset_data_on_readers.argtypes = [dds_listener_p_t, DATA_ON_READERS_PROTO]
 
         self.ddslib.dds_alloc.restype = c_void_p
         self.ddslib.dds_alloc.argtypes = [c_size_t]
@@ -286,6 +314,11 @@ class Runtime:
                 self.ddslib.dds_qset_writer_data_lifecycle(qos, p.auto_dispose)
             elif p.id == DDS_DESTINATIONORDER_QOS_POLICY_ID:
                 self.ddslib.dds_qset_destination_order(qos, p.kind)
+            elif p.id == DDS_DEADLINE_QOS_POLICY_ID:
+                self.ddslib.dds_qset_deadline(qos, p.deadline) 
+            elif p.id == DDS_RESOURCELIMITS_QOS_POLICY_ID:
+                self.ddslib.dds_qset_resource_limits (qos, p.max_samples, p.max_instances, p.max_samples_per_instance);
+                
         return qos
 
 
