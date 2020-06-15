@@ -21,7 +21,7 @@ class GaurdCondition (Entity):
         return True
         
     def read_trigger (self):
-        triggered = POINTER(c_bool)()
+        triggered = (c_bool)()
         ret = self.rt.ddslib.dds_read_guardcondition(self.handle, byref(triggered))
         
         if ret == 0:
@@ -30,7 +30,7 @@ class GaurdCondition (Entity):
         return None
     
     def take_trigger (self):
-        triggered = POINTER(c_bool)()
+        triggered = (c_bool)()
         ret = self.rt.ddslib.dds_take_guardcondition(self.handle, byref(triggered))
         
         if ret == 0:
