@@ -4,6 +4,12 @@ class Policy:
     def __init__(self, id, kind):
         self.id = id
         self.kind = kind
+        
+class Deadline (Policy):
+    def __init__(self, deadline = 0 ):
+        Policy.__init__(self, DDS_DEADLINE_QOS_POLICY_ID, deadline )
+        self.deadline = deadline
+        
 
 class Partition(Policy):
     def __init__(self, ps):
@@ -86,6 +92,13 @@ class SourceTimestampOrder(Policy):
     def __init__(self):
         Policy.__init__(self, DDS_DESTINATIONORDER_QOS_POLICY_ID, DDS_DESTINATIONORDER_BY_SOURCE_TIMESTAMP)
 
+
+class ResourceLimit(Policy):
+    def __init__(self, max_instances = LENGTH_UNLIMITED , max_samples = LENGTH_UNLIMITED, max_samples_per_instance = LENGTH_UNLIMITED):
+        Policy.__init__(self, DDS_RESOURCELIMITS_QOS_POLICY_ID, None)
+        self.max_instances = max_instances
+        self.max_samples = max_samples 
+        self.max_samples_per_instance = max_samples_per_instance
 
 
 DDS_V_State = [Reliable(), KeepLastHistory(1), Volatile(), ManualInstanceDispose(), SourceTimestampOrder()]
