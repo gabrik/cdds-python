@@ -133,7 +133,7 @@ class Writer (Entity):
          
     def on_liveliness_lost(self, fun):
         self.liveliness_listener = fun
-        self.dispatcher.register_liveliness_lost_listener(self.handle, self.__handle_liveliness_lost)
+        self.dispatcher.register_liveliness_lost_listener(self.handle, fun)
     
     def __handle_pub_matched(self, r, s):
         self.publicatoin_listener(self, s)
