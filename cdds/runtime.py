@@ -235,6 +235,9 @@ class Runtime:
         
         self.ddslib.dds_lset_data_on_readers.restype = None
         self.ddslib.dds_lset_data_on_readers.argtypes = [dds_listener_p_t, DATA_ON_READERS_PROTO]
+        
+        self.ddslib.dds_lset_inconsistent_topic.restype = None
+        self.ddslib.dds_lset_inconsistent_topic.argstypes = [dds_listener_p_t, INCONSISTENT_TOPIC_PROTO]
 
         self.ddslib.dds_alloc.restype = c_void_p
         self.ddslib.dds_alloc.argtypes = [c_size_t]
