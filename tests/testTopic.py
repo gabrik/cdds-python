@@ -12,7 +12,7 @@ class TopicTest (unittest.TestCase):
         self.dp = Participant(0)
         self.name = "topic_name"
         self.type_support = self.rt.get_hello_world_simple_value_type_support()
-        self.topic = Topic (self.dp, self.name, self.type_support , None, None)
+        self.topic = Topic (self.dp, self.name, self.type_support , None, None, None)
         
     def tearDown(self):
         self.dp.rt.close()
