@@ -28,7 +28,7 @@ def trampoline_on_sample_lost(e, s, a):
     logger.debug('DefaultListener', '>> Sample Lost')
 
 
-def do_nothing(a):
+def do_nothing(entity, a):
     return a
 
 
