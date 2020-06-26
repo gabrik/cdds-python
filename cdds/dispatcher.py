@@ -18,6 +18,8 @@ class Dispatcher(object):
             self.sampleRejectedListenerMap = {}
             self.sampleLostListenerMap = {}
             
+            self.inconsistent_topicMap = {}
+            
             self.dataOnReaderListenerMap = {}
             
             self.publicationMatchedListenerMap = {}
@@ -32,6 +34,10 @@ class Dispatcher(object):
     def register_data_listener(self, handle, fun):
         h = repr(handle)
         self.dataListenerMap[h] = fun
+        
+    def register_on_inconsistent_topic_listener(self, handle, fun):
+        h = repr(handle)
+        self.inconsistent_topicMap[h] = fun
 
     def register_liveliness_changed_listener(self, handle, fun):
         h = repr(handle)
@@ -60,7 +66,6 @@ class Dispatcher(object):
         
     def register_data_on_readers_listener(self, handle, fun):
         h = repr(handle)
-        print ("data on readers listener registered")
         self.dataOnReaderListenerMap[h] = fun
         
     def register_liveliness_lost_listener(self, handle, fun):
@@ -88,7 +93,7 @@ class Dispatcher(object):
         return Dispatcher.__instance
     
     @staticmethod
-    def dispatch_data_listener(handle):
+    def dispatch_data_listener(handle, s):
         h = repr(handle)
         dispatcher_instance = Dispatcher.get_instance()
         if h in dispatcher_instance.dataListenerMap:
@@ -96,13 +101,11 @@ class Dispatcher(object):
             fun(handle)
             
             
-
+            
     @staticmethod
     def dispatch_subscription_matched_listener(handle, s):
         h = repr(handle)
-        
         dispatcher_instance = Dispatcher.get_instance()
-        
         if h in dispatcher_instance.subscriptionMatchedListenerMap:
             fun = dispatcher_instance.subscriptionMatchedListenerMap[h]
             fun(handle, s)
@@ -165,6 +168,13 @@ class Dispatcher(object):
             fun = dispatcher_instance.sampleRejectedListenerMap[h]
             fun(handle, s)
     
+    @staticmethod
+    def dispatch_inconsistent_topic_listener(handle, s):
+        h = repr(handle)
+        dispatcher_instance = Dispatcher.get_instance()
+        if h in dispatcher_instance.inconsistent_topicMap:
+            fun = dispatcher_instance.inconsistent_topicMap[h]
+            fun(handle, s)
     
     @staticmethod
     def dispatch_sample_lost_listener(handle, s):
@@ -180,7 +190,7 @@ class Dispatcher(object):
         dispatcher_instance = Dispatcher.get_instance()
         if h in dispatcher_instance.dataOnReaderListenerMap:
             fun = dispatcher_instance.dataOnReaderListenerMap[h]
-            fun(handle)
+            fun(handle, s)
             
             
             
@@ -224,9 +234,9 @@ class Dispatcher(object):
         Dispatcher.dispatch_liveliness_lost_listener(r, s)
     
     @DATA_AVAILABLE_PROTO
-    def dispatch_on_data_available(r, a):
+    def dispatch_on_data_available(r, s, a):
         # print("[python-cdds]:>>  Dispatching Data Available ")
-        Dispatcher.dispatch_data_listener(r)
+        Dispatcher.dispatch_data_listener(r, s)
     
     
     @SUBSCRIPTION_MATCHED_PROTO
@@ -261,6 +271,11 @@ class Dispatcher(object):
     @SAMPLE_REJECTED_PROTO
     def dispatch_on_sample_rejected(e, s, a):
         Dispatcher.dispatch_sample_rejected_listener(e, s)
+        
+    @INCONSISTENT_TOPIC_PROTO
+    def dispatch_on_inconsistent_topic(e, s, a):
+        # print("[python-cdds]:>>  dispatching inconsistent topic ")
+        Dispatcher.dispatch_inconsistent_topic_listener(e, s)
         
     
     @DATA_ON_READERS_PROTO
