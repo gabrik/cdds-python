@@ -192,11 +192,19 @@ REQUESTED_DEADLINE_MISSED_PROTO = CFUNCTYPE(None, c_void_p, c_void_p, c_void_p)
 REQUESTED_INCOMPATIBLE_QOS_PROTO = CFUNCTYPE(None, c_void_p, c_void_p, c_void_p)
 SAMPLE_REJECTED_PROTO = CFUNCTYPE(None, c_void_p, c_void_p, c_void_p)
 LIVELINESS_CHANGED_PROTO = CFUNCTYPE(None, c_void_p, c_void_p, c_void_p)
-DATA_AVAILABLE_PROTO = CFUNCTYPE(None, c_void_p, c_void_p)
+DATA_AVAILABLE_PROTO = CFUNCTYPE(None, c_void_p, c_void_p, c_void_p)
 SUBSCRIPTION_MATCHED_PROTO = CFUNCTYPE(None, c_void_p, c_void_p, c_void_p)
+
+INCONSISTENT_TOPIC_PROTO = CFUNCTYPE(None, c_void_p, c_void_p)
+
+
+OFFERED_DEADLINE_MISSED_PROTO = CFUNCTYPE(None, c_void_p, c_void_p, c_void_p)
+OFFERED_INCOMPATIBLE_QOS_PROTO = CFUNCTYPE(None, c_void_p, c_void_p, c_void_p)
 SAMPLE_LOST_PROTO = CFUNCTYPE(None, c_void_p, c_void_p, c_void_p)
+LIVELINESS_LOST_PROTO = CFUNCTYPE(None, c_void_p, c_void_p, c_void_p)
+PUBLICATION_MATCHED_PROTO = CFUNCTYPE(None, c_void_p, c_void_p, c_void_p)
 
-
+DATA_ON_READERS_PROTO = CFUNCTYPE(None, c_void_p, c_void_p)
 
 
 # There are actually used to check the the listener are actually working...
