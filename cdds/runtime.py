@@ -106,6 +106,9 @@ class Runtime:
 
         self.ddslib.dds_qset_destination_order.restype = None
         self.ddslib.dds_qset_destination_order.argtypes = [dds_qos_p_t, c_uint32]
+        
+        self.ddslib.dds_qget_durability.restype = c_bool
+        self.ddslib.dds_qget_durability.argtypes = [dds_qos_p_t, c_uint32]
 
         # -- read / take --
         self.ddslib.dds_take.restype = c_int
