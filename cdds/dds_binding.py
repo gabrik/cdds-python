@@ -2,7 +2,6 @@ import platform
 import os
 from ctypes import *
 
-
 def get_lib_ext():
     system = platform.system()
     if system == 'Linux':
@@ -12,34 +11,68 @@ def get_lib_ext():
     else:
         return '.dll'
 
+
+# def get_user_lib_path():
+#     system = platform.system()
+#     if system == 'Linux':
+#         return '/usr/local/lib'
+#     elif system == 'Darwin':
+#         return '/usr/local/lib'
+#     elif system in ['windows', 'Windows', 'win32']:
+#         return os.environ['CDDS_HOME']
+#     else:
+#         return '/usr/local/lib'
+
 def get_user_lib_path():
+     system = platform.system()
+     if system == 'Linux':
+        return '/home/firas/cyclone/cyclonedds/bld/lib/'
+     elif system == 'Darwin':
+         return '/usr/local/lib'
+     elif system in ['windows', 'Windows', 'win32']:
+         return os.environ['CDDS_HOME']
+     else:
+        return '/home/firas/cyclone/cyclonedds/bld/lib/'
+ 
+def get_user_bit_lib_path():
     system = platform.system()
     if system == 'Linux':
-        return '/usr/local/lib'
+        return '/home/firas/cyclone/cdds-python/bit/build'
     elif system == 'Darwin':
         return '/usr/local/lib'
     elif system in ['windows', 'Windows', 'win32']:
         return os.environ['CDDS_HOME']
     else:
-        return '/usr/local/lib'
+        return '/home/firas/cyclone/cdds-python/bit/build'
 
-
+# system = platform.system()
+# if system in ['windows', 'Windows', 'win32']:
+#     cham_lib = 'ddsc' + get_lib_ext()
+#     bit_lib = 'ddstubs' + get_lib_ext()
+#     cham_lib_path = get_user_bit_lib_path() + os.sep + cham_lib
+#     bit_lib_path = get_user_bit_lib_path() + os.sep + bit_lib
+# else:
+#     cham_lib = 'libddsbit' + get_lib_ext()
+#     bit_lib = 'libddstubs' + get_lib_ext()
+#     cham_lib_path = get_user_bit_lib_path() + os.sep + cham_lib
+#     bit_lib_path = get_user_bit_lib_path() + os.sep + bit_lib
+    
 system = platform.system()
 if system in ['windows', 'Windows', 'win32']:
-    cham_lib = 'ddsc' + get_lib_ext()
-    bit_lib = 'ddstubs' + get_lib_ext()
-    cham_lib_path = get_user_lib_path() + os.sep + cham_lib
-    bit_lib_path = get_user_lib_path() + os.sep + bit_lib
+   cham_lib = 'ddsc' + get_lib_ext()
+   bit_lib = 'ddstubs' + get_lib_ext()
+   cham_lib_path = get_user_lib_path() + os.sep + cham_lib
+   bit_lib_path = get_user_bit_lib_path() + os.sep + bit_lib
 else:
     cham_lib = 'libddsc' + get_lib_ext()
-    bit_lib = 'libddstubs' + get_lib_ext()
+    bit_lib = 'libddstubs' + get_lib_ext() 
     helloworld_lib = 'libddshelloworld' + get_lib_ext()
     cham_lib_path = get_user_lib_path() + os.sep + cham_lib
-    bit_lib_path = get_user_lib_path() + os.sep + bit_lib
-
-# Limits and Constants
-MAX_SAMPLES = 256
+    bit_lib_path = get_user_bit_lib_path() + os.sep + bit_lib
     helloworld_lib_path = get_user_bit_lib_path() + os.sep + helloworld_lib
+ 
+ # Limits and Constants
+MAX_SAMPLES = 100
 
 
 #
@@ -121,6 +154,7 @@ DDS_LIVELINESS_MANUAL_BY_TOPIC = 2
 DDS_DESTINATIONORDER_BY_RECEPTION_TIMESTAMP = 0
 DDS_DESTINATIONORDER_BY_SOURCE_TIMESTAMP = 1
 
+
 def dds_secs(n):
     return n*1000000000
 
@@ -132,7 +166,6 @@ def dds_micros(n):
 
 def dds_nanos(n):
     return n
-
 
 #
 # DDS Sample Info
@@ -173,7 +206,7 @@ class SampleInfo(Structure):
 dds_entity_t = c_int32
 dds_time_t = c_int64
 dds_duration_t = c_int64
-dds_instance_handle_t = c_int64
+dds_instance_handle_t = c_uint64
 dds_domainid_t = c_uint32
 dds_sample_state_t = c_int
 dds_view_state_t = c_int
