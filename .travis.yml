@@ -1,7 +1,7 @@
 before_install:
-  - sudo apt install -y python3-pip build-essential cmake
+  - sudo apt install -y python3-pip build-essential cmake default-jdk maven
   - git clone https://github.com/eclipse-cyclonedds/cyclonedds /tmp/cyclonedds
-  - cd /tmp/cyclonedds && mkdir build && cd cmake --build . --target install
+  - cd /tmp/cyclonedds && mkdir build && cd build && cmake ..  && make && sudo make install && cd $TRAVIS_BUILD_DIR
 addons:
   apt:
     update: true
