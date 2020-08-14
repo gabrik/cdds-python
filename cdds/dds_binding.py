@@ -56,7 +56,8 @@ def get_user_bit_lib_path():
 #     bit_lib = 'libddstubs' + get_lib_ext()
 #     cham_lib_path = get_user_bit_lib_path() + os.sep + cham_lib
 #     bit_lib_path = get_user_bit_lib_path() + os.sep + bit_lib
-    
+
+
 system = platform.system()
 if system in ['windows', 'Windows', 'win32']:
    cham_lib = 'ddsc' + get_lib_ext()
@@ -70,8 +71,8 @@ else:
     cham_lib_path = get_user_lib_path() + os.sep + cham_lib
     bit_lib_path = get_user_bit_lib_path() + os.sep + bit_lib
     helloworld_lib_path = get_user_bit_lib_path() + os.sep + helloworld_lib
- 
- # Limits and Constants
+
+# Limits and Constants
 MAX_SAMPLES = 100
 
 
@@ -88,6 +89,7 @@ DDS_ALIVE_INSTANCE_STATE = 16
 DDS_NOT_ALIVE_DISPOSED_INSTANCE_STATE = 32
 DDS_NOT_ALIVE_NO_WRITERS_INSTANCE_STATE = 64
 DDS_ANY_INSTANCE_STATE =  DDS_ALIVE_INSTANCE_STATE | DDS_NOT_ALIVE_DISPOSED_INSTANCE_STATE | DDS_NOT_ALIVE_NO_WRITERS_INSTANCE_STATE
+DDS_ANY_INSTANCE_STATE = DDS_ALIVE_INSTANCE_STATE | DDS_NOT_ALIVE_DISPOSED_INSTANCE_STATE | DDS_NOT_ALIVE_NO_WRITERS_INSTANCE_STATE
 
 DDS_ANY_STATE = DDS_ANY_SAMPLE_STATE | DDS_ANY_VIEW_STATE | DDS_ANY_INSTANCE_STATE
 
@@ -154,15 +156,24 @@ DDS_LIVELINESS_MANUAL_BY_TOPIC = 2
 DDS_DESTINATIONORDER_BY_RECEPTION_TIMESTAMP = 0
 DDS_DESTINATIONORDER_BY_SOURCE_TIMESTAMP = 1
 
+LENGTH_UNLIMITED = -1
+
+
+def dds_infinity():
+    return 1e20
+
 
 def dds_secs(n):
-    return n*1000000000
+    return n * 1000000000
+
 
 def dds_millis(n):
-    return n*1000000
+    return n * 1000000
+
 
 def dds_micros(n):
-    return n*1000
+    return n * 1000
+
 
 def dds_nanos(n):
     return n
@@ -226,8 +237,6 @@ SUBSCRIPTION_MATCHED_PROTO = CFUNCTYPE(None, c_void_p, c_void_p, c_void_p)
 SAMPLE_LOST_PROTO = CFUNCTYPE(None, c_void_p, c_void_p, c_void_p)
 
 
-
-
 # There are actually used to check the the listener are actually working...
 
 def trivial_on_requested_deadline_missed(r, s):
@@ -243,8 +252,6 @@ def trivial_on_requested_incompatible_qos(r, s):
 def trivial_on_sample_rejected(r, s):
     global logger
     logger.debug('DefaultListener', '>> Sample Rejected')
-
-
 
 
 class DDSValue(Structure):
@@ -268,6 +275,8 @@ class DDSSequence(Structure):
 #
 # Built-in key-value type
 #
+
+
 class DDSKeyBValue(Structure):
     _fields_ = [('key', c_char_p),
                 ('value', DDSSequence)]

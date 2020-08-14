@@ -1,9 +1,9 @@
+from random import randint
+import sys
+import time
+from cdds import *
 _author__ = 'Angelo Corsaro'
 
-from cdds import *
-import  time
-import sys
-from random import randint
 
 class VehiclePosition(Topic):
     def __init__(self, cid):
@@ -26,6 +26,7 @@ class VehiclePosition(Topic):
     def __str__(self):
         return 'VehiclePosition({0}, {1}, {2})'.format(self.key_, self.x, self.y)
 
+
 if __name__ == '__main__':
 
     cid = randint(0, 1000)
@@ -41,7 +42,7 @@ if __name__ == '__main__':
     # print("Reliable id = {0}".format(Reliable().id))
     # print("KeepLastHistory id = {0}".format(KeepLastHistory(1).id))
     # 'VehiclePosition'
-    t = FlexyTopic(dp, 'KeyValue') #, None, [Reliable(),Persistent(), KeepLastHistory(1)])
+    t = FlexyTopic(dp, 'KeyValue')  # , None, [Reliable(),Persistent(), KeepLastHistory(1)])
 
     # p = Publisher(dp, 'cdds-python.demo')
     w = FlexyWriter(dp, t, [Reliable(), KeepLastHistory(10)])
@@ -50,11 +51,10 @@ if __name__ == '__main__':
     dx = 1
     dy = 1
 
-
-    while (True):
+    while(True):
         w.write(vpos)
-        print('Wrote: {0}'.format(vpos))
+        print('Wrote:{0}'.format(vpos))
         vpos.moveBy(dx, dy)
         time.sleep(1)
-        #print('Press a key to move the vehicle...')
-        #input()
+        # print('Press a key to move the vehicle...')
+        # input()

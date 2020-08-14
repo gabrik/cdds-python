@@ -4,9 +4,9 @@ import jsonpickle
 
 
 class FlexyWriter:
-    def __init__(self, pub, flexy_topic, ps = None):
+    def __init__(self, pub, flexy_topic, ps=None):
         self.rt = Runtime.get_runtime()
-        self. prticipant= pub.participant
+        self. prticipant = pub.participant
         self.qos = self.rt.to_rw_qos(ps)
         self.handle = self.rt.ddslib.dds_create_writer(pub.handle, flexy_topic.topic, self.qos, None)
 

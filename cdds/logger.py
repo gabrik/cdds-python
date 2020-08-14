@@ -26,8 +26,6 @@ class DDSLogger:
             handler.setFormatter(formatter)
             self.logger.addHandler(handler)
 
-
-
         def info(self, caller, message):
             self.logger.info(str('< %s > %s') % (caller, message))
 
@@ -72,4 +70,3 @@ class DDSLogger:
 
 
 logger = DDSLogger()
-

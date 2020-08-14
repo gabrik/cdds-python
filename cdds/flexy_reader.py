@@ -6,20 +6,24 @@ from cdds import *
 
 from collections import namedtuple
 
+
 @LIVELINESS_CHANGED_PROTO
 def trampoline_on_liveliness_changed(r, s, a):
     # print("[python-cdds]:>>  Dispatching Liveliness change")
     Runtime.dispatch_liveliness_changed_listener(r, s)
+
 
 @DATA_AVAILABLE_PROTO
 def trampoline_on_data_available(r, a):
     # print("[python-cdds]:>>  Dispatching Data Available ")
     Runtime.dispatch_data_listener(r)
 
+
 @SUBSCRIPTION_MATCHED_PROTO
 def trampoline_on_subscription_matched(e, s, a):
     # print("[python-cdds]:>>  Dispatching Subscription Match")
     Runtime.dispatch_subscription_matched_listener(e, s)
+
 
 @SAMPLE_LOST_PROTO
 def trampoline_on_sample_lost(e, s, a):
@@ -51,6 +55,7 @@ def new_instance_samples():
 def not_alive_instance_samples():
     return c_uint(DDS_ANY_SAMPLE_STATE | DDS_ANY_VIEW_STATE | DDS_NOT_ALIVE_NO_WRITERS_INSTANCE_STATE)
 
+
 class FlexyReader:
     def __init__(self, sub, flexy_topic, flexy_data_listener=None, ps=None):
         self.rt = Runtime.get_runtime()
@@ -61,26 +66,19 @@ class FlexyReader:
             self.data_listener = do_nothing
         else:
             self.data_listener = flexy_data_listener
-
         self.qos = self.rt.to_rw_qos(ps)
-
         self.subsciption_listener = None
         self._liveliness_listener = None
-
         self.handle = c_void_p()
-
         topic = self.flexy_topic.topic
-
         self.listener_handle = self.rt.ddslib.dds_create_listener(None)
-        self.rt.ddslib.dds_lset_data_available(self.listener_handle , trampoline_on_data_available)
+        self.rt.ddslib.dds_lset_data_available(self.listener_handle, trampoline_on_data_available)
         self.rt.ddslib.dds_lset_liveliness_changed(self.listener_handle, trampoline_on_liveliness_changed)
         self.rt.ddslib.dds_lset_subscription_matched(self.listener_handle, trampoline_on_subscription_matched)
 
         self.handle = self.rt.ddslib.dds_create_reader(sub.handle, topic, self.qos, self.listener_handle)
         assert (self.handle > 0)
         self.rt.register_data_listener(self.handle, self.__handle_data)
-
-
 
     def on_data_available(self, fun):
         self.data_listener = fun
@@ -129,9 +127,7 @@ class FlexyReader:
         ivec = (SampleInfo * n)()
         infos = cast(ivec, POINTER(SampleInfo))
         samples = (c_void_p * n)()
-
         nr = self.rt.ddslib.dds_read_mask_wl(self.handle, samples, infos, n, sample_selector)
-
         data = []
         for i in range(nr):
             sp = cast(c_void_p(samples[i]), POINTER(self.flexy_topic.data_type))
@@ -141,7 +137,6 @@ class FlexyReader:
             else:
                 kh = jsonpickle.decode(sp[0].key.decode(encoding='UTF-8'))
                 data.append(kh)
-
         self.rt.ddslib.dds_return_loan(self.handle, samples, nr)
 
         return zip(data, infos)

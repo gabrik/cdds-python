@@ -3,7 +3,9 @@ __author__ = 'Angelo Corsaro'
 from cdds import *
 import time
 
-# TODO: Factor out the definition of Vehicle position...
+# TODO:Factor out the definition of Vehicle position...
+
+
 class VehiclePosition(Topic):
     def __init__(self, cid):
         super(Topic, self).__init__()
@@ -25,21 +27,24 @@ class VehiclePosition(Topic):
     def __str__(self):
         return 'VehiclePosition({0}, {1}, {2})'.format(self.key_, self.x, self.y)
 
+
 def data_available(r):
     print('reader>> Listenerr Called!')
     samples = r.take(all_samples())
     for s in samples:
         if s[1].valid_data:
-            print ('reader>> {0})'.format(s[0]))
+            print('reader>> {0})'.format(s[0]))
+
 
 def liveliness_changed(r, e):
     print(">>>>> Changed Liveliness!!")
+
 
 def testDynaTypes():
     rt = Runtime()
     dp = Participant(0)
 
-    t = FlexyTopic(dp,  'KeyValue')
+    t = FlexyTopic(dp, 'KeyValue')
 
     dr = FlexyReader(dp, t, data_available, [Reliable(), KeepLastHistory(10)])
     dr.on_liveliness_changed(liveliness_changed)
@@ -51,6 +56,7 @@ def testDynaTypes():
     #             print('reader>> {0})'.format(s[0]))
     while True:
         time.sleep(60)
+
 
 if __name__ == '__main__':
     testDynaTypes()

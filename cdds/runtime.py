@@ -2,6 +2,7 @@ from ctypes import *
 from .dds_binding import *
 the_runtime = None
 
+
 class Runtime:
     @staticmethod
     def get_runtime():
@@ -26,7 +27,7 @@ class Runtime:
         # -- Entity Operations --
         self.ddslib.dds_delete.restype = dds_return_t
         self.ddslib.dds_delete.argtypes = [dds_entity_t]
-        
+
         self.ddslib.dds_enable.restype = dds_return_t
         self.ddslib.dds_enable.argtypes = [dds_entity_t]
         # -- Participant Operations --
@@ -45,7 +46,7 @@ class Runtime:
 
         self.ddslib.dds_find_topic.restype = dds_entity_t
         self.ddslib.dds_find_topic.argtypes = [dds_entity_t, c_char_p]
-        
+
         self.ddslib.dds_get_name.restype = dds_return_t
         self.ddslib.dds_get_name.argtypes = [dds_entity_t, c_char_p, c_int]
 
@@ -123,13 +124,13 @@ class Runtime:
         # -- read / take with loan--
         self.ddslib.dds_read_wl.restype = c_int
         self.ddslib.dds_read_wl.argtypes = [dds_entity_t, POINTER(c_void_p), POINTER(SampleInfo), c_uint32]
-        
+
         self.ddslib.dds_read_mask_wl.restype = c_int
         self.ddslib.dds_read_mask_wl.argtypes = [dds_entity_t, POINTER(c_void_p), POINTER(SampleInfo), c_uint32, c_uint32]
-        
+
         self.ddslib.dds_read_instance.restype = c_int
         self.ddslib.dds_read_instance.argstypes = [dds_entity_t, POINTER(c_void_p), POINTER(SampleInfo), c_uint32, c_uint32, dds_instance_handle_t]
-        
+
         self.ddslib.dds_take_mask_wl.restype = c_int
         self.ddslib.dds_take_mask_wl.argtypes = [dds_entity_t, POINTER(c_void_p), POINTER(SampleInfo), c_uint32, c_uint32]
 
@@ -174,21 +175,21 @@ class Runtime:
 
         self.ddslib.dds_create_querycondition.restype = dds_entity_t
         self.ddslib.dds_create_querycondition.argtypes = [dds_entity_t, c_uint32, CFUNCTYPE(c_bool, c_void_p)]
-        
+
         self.ddslib.dds_create_guardcondition.restype = dds_entity_t
         self.ddslib.dds_create_guardcondition.argstypes = [dds_entity_t]
-        
+
         self.ddslib.dds_get_mask.restype = dds_return_t
         self.ddslib.dds_get_mask.argstypes = [dds_entity_t, c_void_p]
-        
+
         self.ddslib.dds_get_datareader.restype = dds_entity_t
         self.ddslib.dds_get_datareader.argstypes = [dds_entity_t]
         self.ddslib.dds_set_guardcondition.restype = dds_return_t
         self.ddslib.dds_set_guardcondition.argstypes = [dds_entity_t, c_bool]
-        
+
         self.ddslib.dds_read_guardcondition.restype = dds_return_t
         self.ddslib.dds_read_guardcondition.argstypes = [dds_entity_t, POINTER(c_bool)]
-        
+
         self.ddslib.dds_take_guardcondition.restype = dds_return_t
         self.ddslib.dds_take_guardcondition.argstypes = [dds_entity_t, POINTER(c_bool)]
 
@@ -253,12 +254,12 @@ class Runtime:
             fun = the_runtime.livelinessChangeListenerMap[h]
             fun(handle, s)
 
-
     def get_key_value_type_support(self):
         return self.stublib.dds_bit_SKeySValue_desc
 
     def get_simple_value_type_support(self):
         return self.stublib.dds_bit_SValue_desc
+
     def get_hello_world_key_value_type_support(self):
         return self.helloworld_lib.HelloWorldDataMsg_keys
 
@@ -288,7 +289,6 @@ class Runtime:
                 self.ddslib.dds_qset_destination_order(qos, p.kind)
         return qos
 
-
     def to_ps_qos(self, ps):
         if ps is None:
             return None
@@ -310,7 +310,6 @@ class Runtime:
 
     def release_dds_qos(self, qos):
         self.ddslib.dds_delete_qos(qos)
-
 
     def close(self):
         # Magic value is DDS_CYCLONEDDS_HANDLE, so this tears down
