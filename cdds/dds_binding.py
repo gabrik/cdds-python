@@ -4,7 +4,7 @@ from ctypes import *
 
 
 def get_lib_ext():
-    system = system()
+    system = platform.system()
     if system == 'Linux':
         return '.so'
     elif system == 'Darwin':
@@ -13,7 +13,7 @@ def get_lib_ext():
         return '.dll'
 
 def get_user_lib_path():
-    system = system()
+    system = platform.system()
     if system == 'Linux':
         return '/usr/local/lib'
     elif system == 'Darwin':
@@ -24,7 +24,7 @@ def get_user_lib_path():
         return '/usr/local/lib'
 
 
-system = system()
+system = platform.system()
 if system in ['windows', 'Windows', 'win32']:
     cham_lib = 'ddsc' + get_lib_ext()
     bit_lib = 'ddstubs' + get_lib_ext()
