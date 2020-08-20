@@ -1,4 +1,4 @@
-import platform
+from platform import platform, system
 import os
 from ctypes import *
 

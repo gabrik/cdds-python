@@ -33,7 +33,7 @@ class Inner_Struct_Array(FlexyTopic):
         self.SeqArray = seq
 
     def __str__(self):
-        return f'Inner_Struct_Array {self.SeqArray}'
+        return f('Inner_Struct_Array {self.SeqArray}')
 
     def __getitem__(self, item_number):
         return self.SeqArray[item_number]
