@@ -1,4 +1,4 @@
-from platform import platform, system
+import platform
 import os
 from ctypes import *
 
@@ -33,7 +33,7 @@ def get_user_lib_path():
          return os.environ['CDDS_HOME']
      else:
         return '/home/firas/cyclone/cyclonedds/bld/lib/'
- 
+
 def get_user_bit_lib_path():
     system = platform.system()
     if system == 'Linux':
@@ -66,7 +66,7 @@ if system in ['windows', 'Windows', 'win32']:
    bit_lib_path = get_user_bit_lib_path() + os.sep + bit_lib
 else:
     cham_lib = 'libddsc' + get_lib_ext()
-    bit_lib = 'libddstubs' + get_lib_ext() 
+    bit_lib = 'libddstubs' + get_lib_ext()
     helloworld_lib = 'libddshelloworld' + get_lib_ext()
     cham_lib_path = get_user_lib_path() + os.sep + cham_lib
     bit_lib_path = get_user_bit_lib_path() + os.sep + bit_lib
