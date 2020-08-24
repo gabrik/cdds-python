@@ -26,7 +26,7 @@ def get_lib_ext():
 def get_user_lib_path():
      system = platform.system()
      if system == 'Linux':
-        return '/usr/local/lib/'
+        return '/usr/local/lib'
      elif system == 'Darwin':
          return '/usr/local/lib'
      elif system in ['windows', 'Windows', 'win32']:
@@ -37,7 +37,7 @@ def get_user_lib_path():
 def get_user_bit_lib_path():
     system = platform.system()
     if system == 'Linux':
-        return '/usr/local/lib/'
+        return '/usr/local/lib'
     elif system == 'Darwin':
         return '/usr/local/lib'
     elif system in ['windows', 'Windows', 'win32']:
