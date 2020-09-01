@@ -1,4 +1,5 @@
 before_install:
+  - export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
   - sudo apt install -y python3-pip build-essential cmake default-jdk maven
   - git clone https://github.com/eclipse-cyclonedds/cyclonedds /tmp/cyclonedds
   - cd /tmp/cyclonedds && mkdir build && cd build && cmake ..  && make && sudo make install && cd $TRAVIS_BUILD_DIR
