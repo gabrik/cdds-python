@@ -34,7 +34,7 @@ class DataReaderTest(unittest.TestCase):
 
     def test_read(self):
         print("Begin test_read")
-        idl_path = '/home/firas/cyclone/cdds-python/lexer/example.idl'
+        idl_path = '/tmp/example.idl'
         className = "HelloWorldData_Msg"
         HelloWorldData_Msg = utils.create_class(className, idl_path)
         newMsg = HelloWorldData_Msg(userID=1, message="Other message")
@@ -70,7 +70,7 @@ class DataReaderTest(unittest.TestCase):
 
     def test_read_n(self):
         print("Begin test_read_n")
-        idl_path = '/home/firas/cyclone/cdds-python/lexer/example.idl'
+        idl_path = '/tmp/example.idl'
         className = "HelloWorldData_Msg"
         HelloWorldData_Msg = utils.create_class(className, idl_path)
 
@@ -111,7 +111,7 @@ class DataReaderTest(unittest.TestCase):
 
     def test_read_mask(self):
         print("Begin test_read_mask")
-        idl_path = '/home/firas/cyclone/cdds-python/lexer/example.idl'
+        idl_path = '/tmp/example.idl'
         className = "HelloWorldData_Msg"
         HelloWorldData_Msg = utils.create_class(className, idl_path)
         print("Writer >> Begin writeing data")
@@ -214,7 +214,7 @@ class DataReaderTest(unittest.TestCase):
 
     def test_read_wl(self):
         print("Begin test_read_wl")
-        idl_path = '/home/firas/cyclone/cdds-python/lexer/example.idl'
+        idl_path = '/tmp/example.idl'
         className = "HelloWorldData_Msg"
         HelloWorldData_Msg = utils.create_class(className, idl_path)
         for i in range(50, 55):
@@ -253,7 +253,7 @@ class DataReaderTest(unittest.TestCase):
     # FIXME: Correct the implementation of this test
     def test_read_instacne(self):
         print("Begin test_read_instance")
-        idl_path = '/home/firas/cyclone/cdds-python/lexer/example.idl'
+        idl_path = '/tmp/example.idl'
         className = "HelloWorldData_Msg"
         HelloWorldData_Msg = utils.create_class(className, idl_path)
         for i in range(60, 65):
@@ -324,7 +324,7 @@ class DataReaderTest(unittest.TestCase):
 
     def test_take(self):
         print("Begin test_read")
-        idl_path = '/home/firas/cyclone/cdds-python/lexer/example.idl'
+        idl_path = '/tmp/example.idl'
         className = "HelloWorldData_Msg"
         HelloWorldData_Msg = utils.create_class(className, idl_path)
 
@@ -367,7 +367,7 @@ class DataReaderTest(unittest.TestCase):
 
     def test_take_mask(self):
         print("Begin test_take_mask")
-        idl_path = '/home/firas/cyclone/cdds-python/lexer/example.idl'
+        idl_path = '/tmp/example.idl'
         className = "HelloWorldData_Msg"
         HelloWorldData_Msg = utils.create_class(className, idl_path)
 
@@ -491,7 +491,7 @@ class DataReaderTest(unittest.TestCase):
 
     def test_take_next(self):
         print("Begin test_read_mask")
-        idl_path = '/home/firas/cyclone/cdds-python/lexer/example.idl'
+        idl_path = '/tmp/example.idl'
         className = "HelloWorldData_Msg"
         HelloWorldData_Msg = utils.create_class(className, idl_path)
         print("Writer >> Begin writeing data")
@@ -567,7 +567,7 @@ class DataReaderTest(unittest.TestCase):
 
     def test_read_next(self):
         print("Begin test_read_mask")
-        idl_path = '/home/firas/cyclone/cdds-python/lexer/example.idl'
+        idl_path = '/tmp/example.idl'
         className = "HelloWorldData_Msg"
         HelloWorldData_Msg = utils.create_class(className, idl_path)
         print("Writer >> Begin writeing data")

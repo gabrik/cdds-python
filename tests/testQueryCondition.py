@@ -67,7 +67,7 @@ class QueryConditionTest(unittest.TestCase):
 
     def test_read(self):
         print("Begin test_read")
-        idl_path = '/home/firas/cyclone/cdds-python/lexer/example.idl'
+        idl_path = '/tmp/example.idl'
         className = "HelloWorldData_Msg"
         HelloWorldData_Msg = utils.create_class(className, idl_path)
         for i in range(0, 5):
@@ -180,7 +180,7 @@ class QueryConditionTest(unittest.TestCase):
 
     def test_read_n(self):
         print("Begin test_read_n")
-        idl_path = '/home/firas/cyclone/cdds-python/lexer/example.idl'
+        idl_path = '/tmp/example.idl'
         className = "HelloWorldData_Msg"
         HelloWorldData_Msg = utils.create_class(className, idl_path)
 
@@ -251,7 +251,7 @@ class QueryConditionTest(unittest.TestCase):
 
     def test_read_mask(self):
         print("Begin test_read_mask")
-        idl_path = '/home/firas/cyclone/cdds-python/lexer/example.idl'
+        idl_path = '/tmp/example.idl'
         className = "HelloWorldData_Msg"
         HelloWorldData_Msg = utils.create_class(className, idl_path)
 
@@ -356,7 +356,7 @@ class QueryConditionTest(unittest.TestCase):
 
     def test_read_instacne(self):
         print("Begin test_read_instance")
-        idl_path = '/home/firas/cyclone/cdds-python/lexer/example.idl'
+        idl_path = '/tmp/example.idl'
         className = "HelloWorldData_Msg"
         HelloWorldData_Msg = utils.create_class(className, idl_path)
 
@@ -445,7 +445,7 @@ class QueryConditionTest(unittest.TestCase):
 
     def test_take(self):
         print("Begin test_take")
-        idl_path = '/home/firas/cyclone/cdds-python/lexer/example.idl'
+        idl_path = '/tmp/example.idl'
         className = "HelloWorldData_Msg"
         HelloWorldData_Msg = utils.create_class(className, idl_path)
 
@@ -533,7 +533,7 @@ class QueryConditionTest(unittest.TestCase):
 
     def test_take_mask(self):
         print("Begin test_take_mask")
-        idl_path = '/home/firas/cyclone/cdds-python/lexer/example.idl'
+        idl_path = '/tmp/example.idl'
         className = "HelloWorldData_Msg"
         HelloWorldData_Msg = utils.create_class(className, idl_path)
         print("Writer >> Begin writeing data")

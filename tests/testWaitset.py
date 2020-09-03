@@ -101,7 +101,7 @@ class WaitsetTest(unittest.TestCase):
 
         self.assertEqual(rc, 0, "The number of triggered entity is not correct")
 
-        idl_path = '/home/firas/cyclone/cdds-python/lexer/example.idl'
+        idl_path = '/tmp/example.idl'
         className = "HelloWorldData_Msg"
         HelloWorldData_Msg = utils.create_class(className, idl_path)
 

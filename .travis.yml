@@ -1,5 +1,4 @@
 before_install:
-  # - export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
   - sudo apt install -y python3-pip build-essential cmake default-jdk maven
   - git clone https://github.com/eclipse-cyclonedds/cyclonedds /tmp/cyclonedds
   - cd /tmp/cyclonedds && mkdir build && cd build && cmake ..  && make && sudo make install && cd $TRAVIS_BUILD_DIR
@@ -18,10 +17,8 @@ install:
   - travis_retry pip3 install tox
   - pip install codecov jsonpickle idl_parser
   - ./configure
+  - cp tests/example.idl /tmp/example.idl
 script:
-  # - python setup.py build
-  # - python setup.py bdist_wheel
-  # - pip install dist/python_cdds-0.1.0-py3-none-any.whl
   - tox
 cache:
   directories:
