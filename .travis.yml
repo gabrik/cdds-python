@@ -19,7 +19,6 @@ install:
   - pip install codecov jsonpickle idl_parser
   - ./configure
 script:
-  - ls -al /usr/local/lib/
   # - python setup.py build
   # - python setup.py bdist_wheel
   # - pip install dist/python_cdds-0.1.0-py3-none-any.whl
