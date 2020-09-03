@@ -18,6 +18,7 @@ install:
   - pip install codecov jsonpickle idl_parser
   - ./configure
   - cp tests/example.idl /tmp/example.idl
+  - cp tests/helloworld.idl /tmp/helloworld.idl
 script:
   - tox
 cache:
