@@ -42,7 +42,7 @@ class DataWriterTest(unittest.TestCase):
         return self.helloworld_lib.HelloWorldData_Msg_desc
 
     def test_write(self):
-        idl_path = '/home/firas/cyclone/cdds-python/lexer/example.idl'
+        idl_path = './example.idl'
 
         className = "HelloWorldData_Msg"
         HelloWorldData_Msg = utils.create_class(className, idl_path)
@@ -82,7 +82,7 @@ class DataWriterTest(unittest.TestCase):
                 raise Exception("Unexpected error:", sys.exc_info()[0])
 
     def test_writedispose(self):
-        idl_path = '/home/firas/cyclone/cdds-python/lexer/example.idl'
+        idl_path = './example.idl'
 
         className = "HelloWorldData_Msg"
         HelloWorldData_Msg = utils.create_class(className, idl_path)
@@ -174,7 +174,7 @@ class DataWriterTest(unittest.TestCase):
                     raise Exception("Unexpected error:", sys.exc_info()[0])
 
     def test_dispose(self):
-        idl_path = '/home/firas/cyclone/cdds-python/lexer/example.idl'
+        idl_path = './example.idl'
         className = "HelloWorldData_Msg"
         HelloWorldData_Msg = utils.create_class(className, idl_path)
         for i in range(30, 40):
