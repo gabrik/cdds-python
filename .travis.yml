@@ -17,11 +17,12 @@ python:
 install:
   - travis_retry pip3 install tox
   - pip install codecov jsonpickle idl_parser
-script:
   - ./configure
-  - python setup.py build
-  - python setup.py bdist_wheel
-  - pip install dist/python_cdds-0.1.0-py3-none-any.whl
+script:
+
+  # - python setup.py build
+  # - python setup.py bdist_wheel
+  # - pip install dist/python_cdds-0.1.0-py3-none-any.whl
   - tox
 cache:
   directories:
