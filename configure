@@ -9,7 +9,6 @@ elif [ "$(uname -s)" == "Linux" ]; then
     BIT_LIB=libddstubs.so
 fi
 
-pushd &> /dev/null
 cd bit
 rm -Rf build
 mkdir build
