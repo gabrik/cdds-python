@@ -5,7 +5,7 @@ set -ev
 
 if [ "$(uname)" == "Darwin" ]; then
     BIT_LIB=libddstubs.dylib
-elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+elif [ "$(uname -s)" == "Linux" ]; then
     BIT_LIB=libddstubs.so
 fi
 
@@ -18,8 +18,7 @@ cmake ..
 make
 if [ "$(uname)" == "Darwin" ]; then
     cp ${BIT_LIB} /usr/local/lib
-elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+elif [ "$(uname -s)" == "Linux" ]; then
     sudo cp ${BIT_LIB} /usr/local/lib
 fi
 
-popd &> /dev/null
