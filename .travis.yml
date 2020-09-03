@@ -18,7 +18,6 @@ install:
   - travis_retry pip3 install tox
   - pip install codecov jsonpickle idl_parser
 script:
-  # - cd ../..
   - ./configure
   - python setup.py build
   - python setup.py bdist_wheel
