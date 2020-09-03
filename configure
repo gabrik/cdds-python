@@ -1,7 +1,7 @@
 # -*-Makefile-*-
 #!/bin/bash
 
-set -e
+set -ev
 
 if [ "$(uname)" == "Darwin" ]; then
     BIT_LIB=libddstubs.dylib
